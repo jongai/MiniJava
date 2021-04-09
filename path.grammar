@@ -1,0 +1,77 @@
+%class "Parser";
+
+%terminals            SEMI, COMMA, DOT;
+%terminals            CLASS, PUBLIC, STATIC, VOID, MAIN, NEW, EXTENDS;
+%terminals            PRINT, LENGTH;
+%terminals            PLUS, MINUS, TIMES;
+%terminals            LPAREN, RPAREN, LBRACK, RBRACK, LBRACE, RBRACE;
+%terminals            IF, ELSE, WHILE;
+%terminals            TRUE, FALSE, NOT, AND;
+%terminals            RETURN, THIS;
+%terminals            STRING, INT, BOOLEAN;
+%terminals            EQUALS, LESS;
+%terminals            INT_LIT;        // our scanner provides numbers as integers
+%terminals            ID;
+
+%left DOT;
+%left LBRACK;
+%left AND;
+%left PLUS, MINUS;
+%left TIMES;
+%left LESS;
+%left ID;
+
+%goal Program;
+
+Program = MainClass ClassDecl*;
+
+MainClass = CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE Statement RBRACE RBRACE;
+
+ClassDecl = CLASS ID LBRACE VarDecl* MethodDecl* RBRACE
+| CLASS ID EXTENDS ID LBRACE VarDecl* MethodDecl* RBRACE;
+
+VarDecl = Type ID;
+
+MethodDecl = PUBLIC Type ID LPAREN FormalList RPAREN LBRACE VarDecl* Statement* RETURN Exp SEMI RBRACE;
+
+FormalList = Type ID FormalRest*
+|;
+
+FormalRest = COMMA Type ID;
+
+Type = INT LBRACK RBRACK
+| BOOLEAN
+| INT
+| ID;
+
+Statement = LBRACE Statement* RBRACE
+| IF LPAREN Exp RPAREN Statement ELSE Statement
+| WHILE LPAREN Exp RPAREN Statement
+| PRINT LPAREN Exp RPAREN SEMI
+| ID EQUALS Exp SEMI
+| ID LBRACK Exp RBRACK EQUALS Exp SEMI;
+
+Exp = Exp Op Exp
+| Exp LBRACK Exp RBRACK
+| Exp DOT LENGTH
+| Exp DOT ID LPAREN ExpList RPAREN
+| INT_LIT
+| TRUE
+| FALSE
+| ID
+| THIS
+| NEW INT LBRACK Exp RBRACK
+| NEW ID LPAREN RPAREN
+| NOT Exp
+| LPAREN Exp RPAREN;
+
+ExpList = Exp ExpRest*
+|;
+
+ExpRest = COMMA Exp;
+
+Op = TIMES
+| PLUS
+| MINUS
+| LESS
+| AND;

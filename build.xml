@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<project name="Hello World Project" default="run" basedir="./">
+	<target name="beavertask" unless="beaver.available" description="creates Beaver Ant task">
+		<taskdef name="beaver" classname="beaver.comp.run.AntTask" classpath="./beaver.jar"/>
+		<property name="beaver.available" value="yes"/>
+	</target>
+	<target name="jflextask" unless="jflex.available" description="creates JFlex Ant task">
+		<taskdef name="jflex" classname="jflex.anttask.JFlexTask" classpath="./jflex.jar"/>
+		<property name="jflex.available" value="yes"/>
+	</target>
+	<target name="parser" depends="beavertask, jflextask" description="generates parser">
+		<beaver file     = "path.grammar"
+		sortTerminals    = "yes"
+		exportTables     = "yes"
+		exportTerminals  = "yes" />
+		<jflex file      = "path.flex"
+		nobak            = "yes" />
+	</target>
+	<target name="build" depends="parser" description="builds parser">
+		<javac srcdir="./" classpath="beaver.jar" includeantruntime="false">
+			<compilerarg value="-Xlint:unchecked" />
+		</javac>
+	</target>
+	<target name="run" depends="build" description="runs parser">
+		<java classname="Main" classpath="beaver.jar">
+			<arg value="test.txt"/>
+			<classpath>
+				<pathelement location="."/>
+				<pathelement path="beaver.jar"/>
+			</classpath>
+		</java>
+	</target>
+</project>
