@@ -1,6 +1,6 @@
 class abc {
 	public static void main(String[] args) {
-x = y.m(1,4+5);
+		x = y.m(1,4+5);
 	}
 }
 

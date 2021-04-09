@@ -21,18 +21,21 @@
 %left LESS;
 %left ID;
 
+%typeof INT_LIT = "Integer";
+%typeof ID = "String";
+
 %goal Program;
 
 Program = MainClass ClassDecl*;
 
-MainClass = CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE Statement RBRACE RBRACE;
+MainClass = CLASS ID.i1 LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID.i2 RPAREN LBRACE Statement RBRACE RBRACE;
 
-ClassDecl = CLASS ID LBRACE VarDecl* MethodDecl* RBRACE
-| CLASS ID EXTENDS ID LBRACE VarDecl* MethodDecl* RBRACE;
+ClassDecl = CLASS ID.i LBRACE VarDecl* MethodDecl* RBRACE
+| CLASS ID.i EXTENDS ID.i LBRACE VarDecl* MethodDecl* RBRACE;
 
-VarDecl = Type ID;
+VarDecl = Type ID.i;
 
-MethodDecl = PUBLIC Type ID LPAREN FormalList RPAREN LBRACE VarDecl* Statement* RETURN Exp SEMI RBRACE;
+MethodDecl = PUBLIC Type ID.i LPAREN FormalList RPAREN LBRACE VarDecl* Statement* RETURN Exp SEMI RBRACE;
 
 FormalList = Type ID FormalRest*
 |;
@@ -42,7 +45,7 @@ FormalRest = COMMA Type ID;
 Type = INT LBRACK RBRACK
 | BOOLEAN
 | INT
-| ID;
+| ID.i;
 
 Statement = LBRACE Statement* RBRACE
 | IF LPAREN Exp RPAREN Statement ELSE Statement
@@ -55,7 +58,7 @@ Exp = Exp Op Exp
 | Exp LBRACK Exp RBRACK
 | Exp DOT LENGTH
 | Exp DOT ID LPAREN ExpList RPAREN
-| INT_LIT
+| INT_LIT.i
 | TRUE
 | FALSE
 | ID

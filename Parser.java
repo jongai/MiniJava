@@ -16,27 +16,15 @@ public class Parser extends beaver.Parser {
 		}
 	};
 
-	static final Action RETURN17 = new Action() {
+	static final Action RETURN12 = new Action() {
 		public Symbol reduce(Symbol[] _symbols, int offset) {
-			return _symbols[offset + 17];
+			return _symbols[offset + 12];
 		}
 	};
 
-	static final Action RETURN6 = new Action() {
+	static final Action RETURN4 = new Action() {
 		public Symbol reduce(Symbol[] _symbols, int offset) {
-			return _symbols[offset + 6];
-		}
-	};
-
-	static final Action RETURN8 = new Action() {
-		public Symbol reduce(Symbol[] _symbols, int offset) {
-			return _symbols[offset + 8];
-		}
-	};
-
-	static final Action RETURN13 = new Action() {
-		public Symbol reduce(Symbol[] _symbols, int offset) {
-			return _symbols[offset + 13];
+			return _symbols[offset + 4];
 		}
 	};
 
@@ -58,9 +46,9 @@ public class Parser extends beaver.Parser {
 		}
 	};
 
-	static final Action RETURN4 = new Action() {
+	static final Action RETURN6 = new Action() {
 		public Symbol reduce(Symbol[] _symbols, int offset) {
-			return _symbols[offset + 4];
+			return _symbols[offset + 6];
 		}
 	};
 
@@ -82,7 +70,7 @@ public class Parser extends beaver.Parser {
 			Action.NONE,  	// [2] opt$lst$ClassDecl = 
 			Action.RETURN,	// [3] opt$lst$ClassDecl = lst$ClassDecl
 			RETURN2,	// [4] Program = MainClass opt$lst$ClassDecl; returns 'opt$lst$ClassDecl' although none is marked
-			RETURN17,	// [5] MainClass = CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE Statement RBRACE RBRACE; returns 'RBRACE' although none is marked
+			RETURN12,	// [5] MainClass = CLASS ID.i1 LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID.i2 RPAREN LBRACE Statement RBRACE RBRACE; returns 'i2' although more are marked
 			new Action() {	// [6] lst$VarDecl = VarDecl
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1]); return new Symbol(lst);
@@ -107,9 +95,9 @@ public class Parser extends beaver.Parser {
 			},
 			Action.NONE,  	// [12] opt$lst$MethodDecl = 
 			Action.RETURN,	// [13] opt$lst$MethodDecl = lst$MethodDecl
-			RETURN6,	// [14] ClassDecl = CLASS ID LBRACE opt$lst$VarDecl opt$lst$MethodDecl RBRACE; returns 'RBRACE' although none is marked
-			RETURN8,	// [15] ClassDecl = CLASS ID EXTENDS ID LBRACE opt$lst$VarDecl opt$lst$MethodDecl RBRACE; returns 'RBRACE' although none is marked
-			RETURN2,	// [16] VarDecl = Type ID; returns 'ID' although none is marked
+			RETURN2,	// [14] ClassDecl = CLASS ID.i LBRACE opt$lst$VarDecl opt$lst$MethodDecl RBRACE
+			RETURN4,	// [15] ClassDecl = CLASS ID.i EXTENDS ID.i LBRACE opt$lst$VarDecl opt$lst$MethodDecl RBRACE; returns 'i' although more are marked
+			RETURN2,	// [16] VarDecl = Type ID.i
 			new Action() {	// [17] lst$Statement = Statement
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1]); return new Symbol(lst);
@@ -122,7 +110,7 @@ public class Parser extends beaver.Parser {
 			},
 			Action.NONE,  	// [19] opt$lst$Statement = 
 			Action.RETURN,	// [20] opt$lst$Statement = lst$Statement
-			RETURN13,	// [21] MethodDecl = PUBLIC Type ID LPAREN FormalList RPAREN LBRACE opt$lst$VarDecl opt$lst$Statement RETURN Exp SEMI RBRACE; returns 'RBRACE' although none is marked
+			RETURN3,	// [21] MethodDecl = PUBLIC Type ID.i LPAREN FormalList RPAREN LBRACE opt$lst$VarDecl opt$lst$Statement RETURN Exp SEMI RBRACE
 			new Action() {	// [22] lst$FormalRest = FormalRest
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1]); return new Symbol(lst);
@@ -141,7 +129,7 @@ public class Parser extends beaver.Parser {
 			RETURN3,	// [29] Type = INT LBRACK RBRACK; returns 'RBRACK' although none is marked
 			Action.RETURN,	// [30] Type = BOOLEAN
 			Action.RETURN,	// [31] Type = INT
-			Action.RETURN,	// [32] Type = ID
+			Action.RETURN,	// [32] Type = ID.i
 			RETURN3,	// [33] Statement = LBRACE opt$lst$Statement RBRACE; returns 'RBRACE' although none is marked
 			RETURN7,	// [34] Statement = IF LPAREN Exp RPAREN Statement ELSE Statement; returns 'Statement' although none is marked
 			RETURN5,	// [35] Statement = WHILE LPAREN Exp RPAREN Statement; returns 'Statement' although none is marked
@@ -152,7 +140,7 @@ public class Parser extends beaver.Parser {
 			RETURN4,	// [40] Exp = Exp LBRACK Exp RBRACK; returns 'RBRACK' although none is marked
 			RETURN3,	// [41] Exp = Exp DOT LENGTH; returns 'LENGTH' although none is marked
 			RETURN6,	// [42] Exp = Exp DOT ID LPAREN ExpList RPAREN; returns 'RPAREN' although none is marked
-			Action.RETURN,	// [43] Exp = INT_LIT
+			Action.RETURN,	// [43] Exp = INT_LIT.i
 			Action.RETURN,	// [44] Exp = TRUE
 			Action.RETURN,	// [45] Exp = FALSE
 			Action.RETURN,	// [46] Exp = ID

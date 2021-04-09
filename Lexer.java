@@ -831,7 +831,7 @@ class Lexer extends Scanner {
             // fall through
           case 48: break;
           case 11:
-            { System.out.print(" INT_LIT(" + yytext() + ") "); return newToken(Terminals.INT_LIT);
+            { System.out.print(" INT_LIT(" + yytext() + ") "); return newToken(Terminals.INT_LIT, Integer.valueOf(yytext()));
             }
             // fall through
           case 49: break;
@@ -851,7 +851,7 @@ class Lexer extends Scanner {
             // fall through
           case 52: break;
           case 15:
-            { System.out.print(" ID(" + yytext() + ") "); return newToken(Terminals.ID);
+            { System.out.print(" ID(" + yytext() + ") "); return newToken(Terminals.ID, yytext());
             }
             // fall through
           case 53: break;
