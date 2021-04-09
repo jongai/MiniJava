@@ -46,129 +46,206 @@ public class Parser extends beaver.Parser {
 		}
 	};
 
-	static final Action RETURN6 = new Action() {
-		public Symbol reduce(Symbol[] _symbols, int offset) {
-			return _symbols[offset + 6];
-		}
-	};
-
 	private final Action[] actions;
 
 	public Parser() {
 		super(PARSING_TABLES);
 		actions = new Action[] {
-			new Action() {	// [0] lst$ClassDecl = ClassDecl
+			RETURN2,	// [0] Program = MainClass ClassDeclList; returns 'ClassDeclList' although none is marked
+			RETURN2,	// [1] ClassDeclList = ClassDeclList ClassDecl; returns 'ClassDecl' although none is marked
+			Action.NONE,  	// [2] ClassDeclList = 
+			RETURN12,	// [3] MainClass = CLASS ID.i1 LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID.i2 RPAREN LBRACE Statement RBRACE RBRACE; returns 'i2' although more are marked
+			new Action() {	// [4] lst$VarDecl = VarDecl
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1]); return new Symbol(lst);
 				}
 			},
-			new Action() {	// [1] lst$ClassDecl = lst$ClassDecl ClassDecl
+			new Action() {	// [5] lst$VarDecl = lst$VarDecl VarDecl
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 2]); return _symbols[offset + 1];
 				}
 			},
-			Action.NONE,  	// [2] opt$lst$ClassDecl = 
-			Action.RETURN,	// [3] opt$lst$ClassDecl = lst$ClassDecl
-			RETURN2,	// [4] Program = MainClass opt$lst$ClassDecl; returns 'opt$lst$ClassDecl' although none is marked
-			RETURN12,	// [5] MainClass = CLASS ID.i1 LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID.i2 RPAREN LBRACE Statement RBRACE RBRACE; returns 'i2' although more are marked
-			new Action() {	// [6] lst$VarDecl = VarDecl
+			Action.NONE,  	// [6] opt$lst$VarDecl = 
+			Action.RETURN,	// [7] opt$lst$VarDecl = lst$VarDecl
+			new Action() {	// [8] lst$MethodDecl = MethodDecl
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1]); return new Symbol(lst);
 				}
 			},
-			new Action() {	// [7] lst$VarDecl = lst$VarDecl VarDecl
+			new Action() {	// [9] lst$MethodDecl = lst$MethodDecl MethodDecl
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 2]); return _symbols[offset + 1];
 				}
 			},
-			Action.NONE,  	// [8] opt$lst$VarDecl = 
-			Action.RETURN,	// [9] opt$lst$VarDecl = lst$VarDecl
-			new Action() {	// [10] lst$MethodDecl = MethodDecl
+			Action.NONE,  	// [10] opt$lst$MethodDecl = 
+			Action.RETURN,	// [11] opt$lst$MethodDecl = lst$MethodDecl
+			RETURN2,	// [12] ClassDecl = CLASS ID.i LBRACE opt$lst$VarDecl opt$lst$MethodDecl RBRACE
+			RETURN4,	// [13] ClassDecl = CLASS ID.i EXTENDS ID.i LBRACE opt$lst$VarDecl opt$lst$MethodDecl RBRACE; returns 'i' although more are marked
+			RETURN2,	// [14] VarDecl = Type ID.i
+			new Action() {	// [15] lst$Statement = Statement
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1]); return new Symbol(lst);
 				}
 			},
-			new Action() {	// [11] lst$MethodDecl = lst$MethodDecl MethodDecl
+			new Action() {	// [16] lst$Statement = lst$Statement Statement
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 2]); return _symbols[offset + 1];
 				}
 			},
-			Action.NONE,  	// [12] opt$lst$MethodDecl = 
-			Action.RETURN,	// [13] opt$lst$MethodDecl = lst$MethodDecl
-			RETURN2,	// [14] ClassDecl = CLASS ID.i LBRACE opt$lst$VarDecl opt$lst$MethodDecl RBRACE
-			RETURN4,	// [15] ClassDecl = CLASS ID.i EXTENDS ID.i LBRACE opt$lst$VarDecl opt$lst$MethodDecl RBRACE; returns 'i' although more are marked
-			RETURN2,	// [16] VarDecl = Type ID.i
-			new Action() {	// [17] lst$Statement = Statement
+			Action.NONE,  	// [17] opt$lst$Statement = 
+			Action.RETURN,	// [18] opt$lst$Statement = lst$Statement
+			RETURN3,	// [19] MethodDecl = PUBLIC Type ID.i LPAREN FormalList RPAREN LBRACE opt$lst$VarDecl opt$lst$Statement RETURN Exp SEMI RBRACE
+			new Action() {	// [20] lst$FormalRest = FormalRest
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1]); return new Symbol(lst);
 				}
 			},
-			new Action() {	// [18] lst$Statement = lst$Statement Statement
+			new Action() {	// [21] lst$FormalRest = lst$FormalRest FormalRest
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 2]); return _symbols[offset + 1];
 				}
 			},
-			Action.NONE,  	// [19] opt$lst$Statement = 
-			Action.RETURN,	// [20] opt$lst$Statement = lst$Statement
-			RETURN3,	// [21] MethodDecl = PUBLIC Type ID.i LPAREN FormalList RPAREN LBRACE opt$lst$VarDecl opt$lst$Statement RETURN Exp SEMI RBRACE
-			new Action() {	// [22] lst$FormalRest = FormalRest
+			Action.NONE,  	// [22] opt$lst$FormalRest = 
+			Action.RETURN,	// [23] opt$lst$FormalRest = lst$FormalRest
+			RETURN3,	// [24] FormalList = Type ID opt$lst$FormalRest; returns 'opt$lst$FormalRest' although none is marked
+			Action.NONE,  	// [25] FormalList = 
+			RETURN3,	// [26] FormalRest = COMMA Type ID; returns 'ID' although none is marked
+			RETURN3,	// [27] Type = INT LBRACK RBRACK; returns 'RBRACK' although none is marked
+			Action.RETURN,	// [28] Type = BOOLEAN
+			Action.RETURN,	// [29] Type = INT
+			Action.RETURN,	// [30] Type = ID.i
+			RETURN3,	// [31] Statement = LBRACE opt$lst$Statement RBRACE; returns 'RBRACE' although none is marked
+			RETURN7,	// [32] Statement = IF LPAREN Exp RPAREN Statement ELSE Statement; returns 'Statement' although none is marked
+			RETURN5,	// [33] Statement = WHILE LPAREN Exp RPAREN Statement; returns 'Statement' although none is marked
+			RETURN5,	// [34] Statement = PRINT LPAREN Exp RPAREN SEMI; returns 'SEMI' although none is marked
+			RETURN4,	// [35] Statement = ID EQUALS Exp SEMI; returns 'SEMI' although none is marked
+			RETURN7,	// [36] Statement = ID LBRACK Exp RBRACK EQUALS Exp SEMI; returns 'SEMI' although none is marked
+			new Action() {	// [37] Exp = Exp.e1 TIMES Exp.e2
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol e1 = _symbols[offset + 1];
+					final Symbol e2 = _symbols[offset + 3];
+					 return new Times(e1, e2);
+				}
+			},
+			new Action() {	// [38] Exp = Exp.e1 PLUS Exp.e2
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol e1 = _symbols[offset + 1];
+					final Symbol e2 = _symbols[offset + 3];
+					 return new Plus(e1, e2);
+				}
+			},
+			new Action() {	// [39] Exp = Exp.e1 MINUS Exp.e2
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol e1 = _symbols[offset + 1];
+					final Symbol e2 = _symbols[offset + 3];
+					 return new Minus(e1, e2);
+				}
+			},
+			new Action() {	// [40] Exp = Exp.e1 LESS Exp.e2
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol e1 = _symbols[offset + 1];
+					final Symbol e2 = _symbols[offset + 3];
+					 return new LessThan(e1, e2);
+				}
+			},
+			new Action() {	// [41] Exp = Exp.e1 AND Exp.e2
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol e1 = _symbols[offset + 1];
+					final Symbol e2 = _symbols[offset + 3];
+					 return new And(e1, e2);
+				}
+			},
+			new Action() {	// [42] Exp = Exp.e1 LBRACK Exp.e2 RBRACK
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol e1 = _symbols[offset + 1];
+					final Symbol e2 = _symbols[offset + 3];
+					 return new ArrayLookup(e1, e2);
+				}
+			},
+			new Action() {	// [43] Exp = Exp.e DOT LENGTH
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol e = _symbols[offset + 1];
+					 return new ArrayLength(e);
+				}
+			},
+			new Action() {	// [44] Exp = Exp.e DOT ID.i LPAREN ExpList.el RPAREN
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol e = _symbols[offset + 1];
+					final Symbol _symbol_i = _symbols[offset + 3];
+					final String i = (String) _symbol_i.value;
+					final Symbol el = _symbols[offset + 5];
+					 return new Call(e, i, el);
+				}
+			},
+			new Action() {	// [45] Exp = INT_LIT.i
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_i = _symbols[offset + 1];
+					final Integer i = (Integer) _symbol_i.value;
+					 return new IntegerLiteral(i);
+				}
+			},
+			new Action() {	// [46] Exp = TRUE
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					 return new True();
+				}
+			},
+			new Action() {	// [47] Exp = FALSE
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					 return new False();
+				}
+			},
+			new Action() {	// [48] Exp = ID.s
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_s = _symbols[offset + 1];
+					final String s = (String) _symbol_s.value;
+					 return new IdentifierExp(s);
+				}
+			},
+			new Action() {	// [49] Exp = THIS
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					 return new This();
+				}
+			},
+			new Action() {	// [50] Exp = NEW INT LBRACK Exp.e RBRACK
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol e = _symbols[offset + 4];
+					 return new NewArray(e);
+				}
+			},
+			new Action() {	// [51] Exp = NEW ID.i LPAREN RPAREN
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_i = _symbols[offset + 2];
+					final String i = (String) _symbol_i.value;
+					 return new NewObject(i);
+				}
+			},
+			new Action() {	// [52] Exp = NOT Exp.e
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol e = _symbols[offset + 2];
+					 return new Not(e);
+				}
+			},
+			new Action() {	// [53] Exp = LPAREN Exp.e RPAREN
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol e = _symbols[offset + 2];
+					 return e;
+				}
+			},
+			new Action() {	// [54] lst$ExpRest = ExpRest
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1]); return new Symbol(lst);
 				}
 			},
-			new Action() {	// [23] lst$FormalRest = lst$FormalRest FormalRest
+			new Action() {	// [55] lst$ExpRest = lst$ExpRest ExpRest
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 2]); return _symbols[offset + 1];
 				}
 			},
-			Action.NONE,  	// [24] opt$lst$FormalRest = 
-			Action.RETURN,	// [25] opt$lst$FormalRest = lst$FormalRest
-			RETURN3,	// [26] FormalList = Type ID opt$lst$FormalRest; returns 'opt$lst$FormalRest' although none is marked
-			Action.NONE,  	// [27] FormalList = 
-			RETURN3,	// [28] FormalRest = COMMA Type ID; returns 'ID' although none is marked
-			RETURN3,	// [29] Type = INT LBRACK RBRACK; returns 'RBRACK' although none is marked
-			Action.RETURN,	// [30] Type = BOOLEAN
-			Action.RETURN,	// [31] Type = INT
-			Action.RETURN,	// [32] Type = ID.i
-			RETURN3,	// [33] Statement = LBRACE opt$lst$Statement RBRACE; returns 'RBRACE' although none is marked
-			RETURN7,	// [34] Statement = IF LPAREN Exp RPAREN Statement ELSE Statement; returns 'Statement' although none is marked
-			RETURN5,	// [35] Statement = WHILE LPAREN Exp RPAREN Statement; returns 'Statement' although none is marked
-			RETURN5,	// [36] Statement = PRINT LPAREN Exp RPAREN SEMI; returns 'SEMI' although none is marked
-			RETURN4,	// [37] Statement = ID EQUALS Exp SEMI; returns 'SEMI' although none is marked
-			RETURN7,	// [38] Statement = ID LBRACK Exp RBRACK EQUALS Exp SEMI; returns 'SEMI' although none is marked
-			RETURN3,	// [39] Exp = Exp Op Exp; returns 'Exp' although none is marked
-			RETURN4,	// [40] Exp = Exp LBRACK Exp RBRACK; returns 'RBRACK' although none is marked
-			RETURN3,	// [41] Exp = Exp DOT LENGTH; returns 'LENGTH' although none is marked
-			RETURN6,	// [42] Exp = Exp DOT ID LPAREN ExpList RPAREN; returns 'RPAREN' although none is marked
-			Action.RETURN,	// [43] Exp = INT_LIT.i
-			Action.RETURN,	// [44] Exp = TRUE
-			Action.RETURN,	// [45] Exp = FALSE
-			Action.RETURN,	// [46] Exp = ID
-			Action.RETURN,	// [47] Exp = THIS
-			RETURN5,	// [48] Exp = NEW INT LBRACK Exp RBRACK; returns 'RBRACK' although none is marked
-			RETURN4,	// [49] Exp = NEW ID LPAREN RPAREN; returns 'RPAREN' although none is marked
-			RETURN2,	// [50] Exp = NOT Exp; returns 'Exp' although none is marked
-			RETURN3,	// [51] Exp = LPAREN Exp RPAREN; returns 'RPAREN' although none is marked
-			new Action() {	// [52] lst$ExpRest = ExpRest
-				public Symbol reduce(Symbol[] _symbols, int offset) {
-					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1]); return new Symbol(lst);
-				}
-			},
-			new Action() {	// [53] lst$ExpRest = lst$ExpRest ExpRest
-				public Symbol reduce(Symbol[] _symbols, int offset) {
-					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 2]); return _symbols[offset + 1];
-				}
-			},
-			Action.NONE,  	// [54] opt$lst$ExpRest = 
-			Action.RETURN,	// [55] opt$lst$ExpRest = lst$ExpRest
-			RETURN2,	// [56] ExpList = Exp opt$lst$ExpRest; returns 'opt$lst$ExpRest' although none is marked
-			Action.NONE,  	// [57] ExpList = 
-			RETURN2,	// [58] ExpRest = COMMA Exp; returns 'Exp' although none is marked
-			Action.RETURN,	// [59] Op = TIMES
-			Action.RETURN,	// [60] Op = PLUS
-			Action.RETURN,	// [61] Op = MINUS
-			Action.RETURN,	// [62] Op = LESS
-			Action.RETURN	// [63] Op = AND
+			Action.NONE,  	// [56] opt$lst$ExpRest = 
+			Action.RETURN,	// [57] opt$lst$ExpRest = lst$ExpRest
+			RETURN2,	// [58] ExpList = Exp opt$lst$ExpRest; returns 'opt$lst$ExpRest' although none is marked
+			Action.NONE,  	// [59] ExpList = 
+			RETURN2	// [60] ExpRest = COMMA Exp; returns 'Exp' although none is marked
 		};
 	}
 

@@ -26,7 +26,10 @@
 
 %goal Program;
 
-Program = MainClass ClassDecl*;
+Program = MainClass ClassDeclList;
+
+ClassDeclList = ClassDeclList ClassDecl
+|;
 
 MainClass = CLASS ID.i1 LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID.i2 RPAREN LBRACE Statement RBRACE RBRACE;
 
@@ -54,27 +57,26 @@ Statement = LBRACE Statement* RBRACE
 | ID EQUALS Exp SEMI
 | ID LBRACK Exp RBRACK EQUALS Exp SEMI;
 
-Exp = Exp Op Exp
-| Exp LBRACK Exp RBRACK
-| Exp DOT LENGTH
-| Exp DOT ID LPAREN ExpList RPAREN
-| INT_LIT.i
-| TRUE
-| FALSE
-| ID
-| THIS
-| NEW INT LBRACK Exp RBRACK
-| NEW ID LPAREN RPAREN
-| NOT Exp
-| LPAREN Exp RPAREN;
+Exp = Exp.e1 TIMES Exp.e2 {: return new Times(e1, e2); :}
+| Exp.e1 PLUS Exp.e2 {: return new Plus(e1, e2); :}
+| Exp.e1 MINUS Exp.e2 {: return new Minus(e1, e2); :}
+| Exp.e1 LESS Exp.e2 {: return new LessThan(e1, e2); :}
+| Exp.e1 AND Exp.e2 {: return new And(e1, e2); :}
+| Exp.e1 LBRACK Exp.e2 RBRACK {: return new ArrayLookup(e1, e2); :}
+| Exp.e DOT LENGTH {: return new ArrayLength(e); :}
+| Exp.e DOT ID.i LPAREN ExpList.el RPAREN {: return new Call(e, i, el); :}
+| INT_LIT.i {: return new IntegerLiteral(i); :}
+| TRUE {: return new True(); :}
+| FALSE {: return new False(); :}
+| ID.s {: return new IdentifierExp(s); :}
+| THIS {: return new This(); :}
+| NEW INT LBRACK Exp.e RBRACK {: return new NewArray(e); :}
+| NEW ID.i LPAREN RPAREN {: return new NewObject(i); :}
+| NOT Exp.e {: return new Not(e); :}
+| LPAREN Exp.e RPAREN {: return e; :}
+;
 
 ExpList = Exp ExpRest*
 |;
 
 ExpRest = COMMA Exp;
-
-Op = TIMES
-| PLUS
-| MINUS
-| LESS
-| AND;
