@@ -1,8 +1,9 @@
 import java.util.Vector;
 
-public class ExpList {
+public class ExpList extends Node {
 	private Vector<Exp> list;
 	public ExpList() {
+		super();
 		list = new Vector<Exp>();
 	}
 	public void addElement(Exp n) {

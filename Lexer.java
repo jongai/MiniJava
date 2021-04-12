@@ -851,7 +851,7 @@ class Lexer extends Scanner {
             // fall through
           case 52: break;
           case 15:
-            { System.out.print(" ID(" + yytext() + ") "); return newToken(Terminals.ID, yytext());
+            { System.out.print(" ID(" + yytext() + ") "); return newToken(Terminals.ID, new Identifier(yytext()));
             }
             // fall through
           case 53: break;

@@ -1,8 +1,9 @@
 import java.util.Vector;
 
-public class FormalList {
+public class FormalList extends Node {
 	private Vector<Formal> list;
 	public FormalList() {
+		super();
 		list = new Vector<Formal>();
 	}
 	public void addElement(Formal n) {

@@ -1,8 +1,9 @@
 import java.util.Vector;
 
-public class StatementList {
+public class StatementList extends Node {
 	private Vector<Statement> list;
 	public StatementList() {
+		super();
 		list = new Vector<Statement>();
 	}
 	public void addElement(Statement n) {

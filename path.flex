@@ -68,7 +68,7 @@ ID             = [A-Za-z_][A-Za-z_0-9]*
     "System.out.println" { System.out.print(" System.out.println "); return newToken(Terminals.PRINT); }
     "length"             { System.out.print(" length "); return newToken(Terminals.LENGTH); }
 	{Integer}            { System.out.print(" INT_LIT(" + yytext() + ") "); return newToken(Terminals.INT_LIT, Integer.valueOf(yytext())); }
-	{ID}                 { System.out.print(" ID(" + yytext() + ") "); return newToken(Terminals.ID, yytext()); }
+	{ID}                 { System.out.print(" ID(" + yytext() + ") "); return newToken(Terminals.ID, new Identifier(yytext())); }
 	{WhiteSpace}+        { /* ignore */ }
 }
 

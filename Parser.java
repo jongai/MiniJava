@@ -10,242 +10,378 @@ public class Parser extends beaver.Parser {
 
 	static final ParsingTables PARSING_TABLES = new ParsingTables(Parser.class);
 
-	static final Action RETURN2 = new Action() {
-		public Symbol reduce(Symbol[] _symbols, int offset) {
-			return _symbols[offset + 2];
-		}
-	};
-
-	static final Action RETURN12 = new Action() {
-		public Symbol reduce(Symbol[] _symbols, int offset) {
-			return _symbols[offset + 12];
-		}
-	};
-
-	static final Action RETURN4 = new Action() {
-		public Symbol reduce(Symbol[] _symbols, int offset) {
-			return _symbols[offset + 4];
-		}
-	};
-
-	static final Action RETURN3 = new Action() {
-		public Symbol reduce(Symbol[] _symbols, int offset) {
-			return _symbols[offset + 3];
-		}
-	};
-
-	static final Action RETURN7 = new Action() {
-		public Symbol reduce(Symbol[] _symbols, int offset) {
-			return _symbols[offset + 7];
-		}
-	};
-
-	static final Action RETURN5 = new Action() {
-		public Symbol reduce(Symbol[] _symbols, int offset) {
-			return _symbols[offset + 5];
-		}
-	};
-
 	private final Action[] actions;
 
 	public Parser() {
 		super(PARSING_TABLES);
 		actions = new Action[] {
-			RETURN2,	// [0] Program = MainClass ClassDeclList; returns 'ClassDeclList' although none is marked
-			RETURN2,	// [1] ClassDeclList = ClassDeclList ClassDecl; returns 'ClassDecl' although none is marked
-			Action.NONE,  	// [2] ClassDeclList = 
-			RETURN12,	// [3] MainClass = CLASS ID.i1 LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID.i2 RPAREN LBRACE Statement RBRACE RBRACE; returns 'i2' although more are marked
-			new Action() {	// [4] lst$VarDecl = VarDecl
+			new Action() {	// [0] Program = MainClass.m ClassDeclList.cl
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1]); return new Symbol(lst);
+					final Symbol _symbol_m = _symbols[offset + 1];
+					final MainClass m = (MainClass) _symbol_m.value;
+					final Symbol _symbol_cl = _symbols[offset + 2];
+					final ClassDeclList cl = (ClassDeclList) _symbol_cl.value;
+					 return new Program(m, cl);
 				}
 			},
-			new Action() {	// [5] lst$VarDecl = lst$VarDecl VarDecl
+			new Action() {	// [1] ClassDeclList = ClassDeclList.cl ClassDecl.c
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 2]); return _symbols[offset + 1];
+					final Symbol _symbol_cl = _symbols[offset + 1];
+					final ClassDeclList cl = (ClassDeclList) _symbol_cl.value;
+					final Symbol _symbol_c = _symbols[offset + 2];
+					final ClassDecl c = (ClassDecl) _symbol_c.value;
+					 cl.addElement(c); return cl;
 				}
 			},
-			Action.NONE,  	// [6] opt$lst$VarDecl = 
-			Action.RETURN,	// [7] opt$lst$VarDecl = lst$VarDecl
-			new Action() {	// [8] lst$MethodDecl = MethodDecl
+			new Action() {	// [2] ClassDeclList = 
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1]); return new Symbol(lst);
+					 return new ClassDeclList();
 				}
 			},
-			new Action() {	// [9] lst$MethodDecl = lst$MethodDecl MethodDecl
+			new Action() {	// [3] MainClass = CLASS ID.i1 LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID.i2 RPAREN LBRACE Statement.s RBRACE RBRACE
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 2]); return _symbols[offset + 1];
+					final Symbol _symbol_i1 = _symbols[offset + 2];
+					final Identifier i1 = (Identifier) _symbol_i1.value;
+					final Symbol _symbol_i2 = _symbols[offset + 12];
+					final Identifier i2 = (Identifier) _symbol_i2.value;
+					final Symbol _symbol_s = _symbols[offset + 15];
+					final Statement s = (Statement) _symbol_s.value;
+					 return new MainClass(i1, i2, s);
 				}
 			},
-			Action.NONE,  	// [10] opt$lst$MethodDecl = 
-			Action.RETURN,	// [11] opt$lst$MethodDecl = lst$MethodDecl
-			RETURN2,	// [12] ClassDecl = CLASS ID.i LBRACE opt$lst$VarDecl opt$lst$MethodDecl RBRACE
-			RETURN4,	// [13] ClassDecl = CLASS ID.i EXTENDS ID.i LBRACE opt$lst$VarDecl opt$lst$MethodDecl RBRACE; returns 'i' although more are marked
-			RETURN2,	// [14] VarDecl = Type ID.i
-			new Action() {	// [15] lst$Statement = Statement
+			new Action() {	// [4] ClassDecl = CLASS ID.i LBRACE VarDeclList.vl MethodDeclList.ml RBRACE
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1]); return new Symbol(lst);
+					final Symbol _symbol_i = _symbols[offset + 2];
+					final Identifier i = (Identifier) _symbol_i.value;
+					final Symbol _symbol_vl = _symbols[offset + 4];
+					final VarDeclList vl = (VarDeclList) _symbol_vl.value;
+					final Symbol _symbol_ml = _symbols[offset + 5];
+					final MethodDeclList ml = (MethodDeclList) _symbol_ml.value;
+					 return new ClassDeclSimple(i, vl, ml);
 				}
 			},
-			new Action() {	// [16] lst$Statement = lst$Statement Statement
+			new Action() {	// [5] ClassDecl = CLASS ID.i EXTENDS ID.j LBRACE VarDeclList.vl MethodDeclList.ml RBRACE
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 2]); return _symbols[offset + 1];
+					final Symbol _symbol_i = _symbols[offset + 2];
+					final Identifier i = (Identifier) _symbol_i.value;
+					final Symbol _symbol_j = _symbols[offset + 4];
+					final Identifier j = (Identifier) _symbol_j.value;
+					final Symbol _symbol_vl = _symbols[offset + 6];
+					final VarDeclList vl = (VarDeclList) _symbol_vl.value;
+					final Symbol _symbol_ml = _symbols[offset + 7];
+					final MethodDeclList ml = (MethodDeclList) _symbol_ml.value;
+					 return new ClassDeclExtends(i, j, vl, ml);
 				}
 			},
-			Action.NONE,  	// [17] opt$lst$Statement = 
-			Action.RETURN,	// [18] opt$lst$Statement = lst$Statement
-			RETURN3,	// [19] MethodDecl = PUBLIC Type ID.i LPAREN FormalList RPAREN LBRACE opt$lst$VarDecl opt$lst$Statement RETURN Exp SEMI RBRACE
-			new Action() {	// [20] lst$FormalRest = FormalRest
+			new Action() {	// [6] VarDecl = Type.t ID.i
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1]); return new Symbol(lst);
+					final Symbol _symbol_t = _symbols[offset + 1];
+					final Type t = (Type) _symbol_t.value;
+					final Symbol _symbol_i = _symbols[offset + 2];
+					final Identifier i = (Identifier) _symbol_i.value;
+					 return new VarDecl(t, i);
 				}
 			},
-			new Action() {	// [21] lst$FormalRest = lst$FormalRest FormalRest
+			new Action() {	// [7] VarDeclList = VarDeclList.vl VarDecl.v
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 2]); return _symbols[offset + 1];
+					final Symbol _symbol_vl = _symbols[offset + 1];
+					final VarDeclList vl = (VarDeclList) _symbol_vl.value;
+					final Symbol _symbol_v = _symbols[offset + 2];
+					final VarDecl v = (VarDecl) _symbol_v.value;
+					 vl.addElement(v); return vl;
 				}
 			},
-			Action.NONE,  	// [22] opt$lst$FormalRest = 
-			Action.RETURN,	// [23] opt$lst$FormalRest = lst$FormalRest
-			RETURN3,	// [24] FormalList = Type ID opt$lst$FormalRest; returns 'opt$lst$FormalRest' although none is marked
-			Action.NONE,  	// [25] FormalList = 
-			RETURN3,	// [26] FormalRest = COMMA Type ID; returns 'ID' although none is marked
-			RETURN3,	// [27] Type = INT LBRACK RBRACK; returns 'RBRACK' although none is marked
-			Action.RETURN,	// [28] Type = BOOLEAN
-			Action.RETURN,	// [29] Type = INT
-			Action.RETURN,	// [30] Type = ID.i
-			RETURN3,	// [31] Statement = LBRACE opt$lst$Statement RBRACE; returns 'RBRACE' although none is marked
-			RETURN7,	// [32] Statement = IF LPAREN Exp RPAREN Statement ELSE Statement; returns 'Statement' although none is marked
-			RETURN5,	// [33] Statement = WHILE LPAREN Exp RPAREN Statement; returns 'Statement' although none is marked
-			RETURN5,	// [34] Statement = PRINT LPAREN Exp RPAREN SEMI; returns 'SEMI' although none is marked
-			RETURN4,	// [35] Statement = ID EQUALS Exp SEMI; returns 'SEMI' although none is marked
-			RETURN7,	// [36] Statement = ID LBRACK Exp RBRACK EQUALS Exp SEMI; returns 'SEMI' although none is marked
-			new Action() {	// [37] Exp = Exp.e1 TIMES Exp.e2
+			new Action() {	// [8] VarDeclList = 
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					final Symbol e1 = _symbols[offset + 1];
-					final Symbol e2 = _symbols[offset + 3];
+					 return new VarDeclList();
+				}
+			},
+			new Action() {	// [9] MethodDecl = PUBLIC Type.t ID.i LPAREN FormalList.fl RPAREN LBRACE VarDeclList.vl StatementList.sl RETURN Exp.e SEMI RBRACE
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_t = _symbols[offset + 2];
+					final Type t = (Type) _symbol_t.value;
+					final Symbol _symbol_i = _symbols[offset + 3];
+					final Identifier i = (Identifier) _symbol_i.value;
+					final Symbol _symbol_fl = _symbols[offset + 5];
+					final FormalList fl = (FormalList) _symbol_fl.value;
+					final Symbol _symbol_vl = _symbols[offset + 8];
+					final VarDeclList vl = (VarDeclList) _symbol_vl.value;
+					final Symbol _symbol_sl = _symbols[offset + 9];
+					final StatementList sl = (StatementList) _symbol_sl.value;
+					final Symbol _symbol_e = _symbols[offset + 11];
+					final Exp e = (Exp) _symbol_e.value;
+					 return new MethodDecl(t, i, fl, vl, sl, e);
+				}
+			},
+			new Action() {	// [10] MethodDeclList = MethodDeclList.ml MethodDecl.m
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_ml = _symbols[offset + 1];
+					final MethodDeclList ml = (MethodDeclList) _symbol_ml.value;
+					final Symbol _symbol_m = _symbols[offset + 2];
+					final MethodDecl m = (MethodDecl) _symbol_m.value;
+					 ml.addElement(m); return ml;
+				}
+			},
+			new Action() {	// [11] MethodDeclList = 
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					 return new MethodDeclList();
+				}
+			},
+			new Action() {	// [12] FormalList = FormalList.fl COMMA Type.t ID.i
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_fl = _symbols[offset + 1];
+					final FormalList fl = (FormalList) _symbol_fl.value;
+					final Symbol _symbol_t = _symbols[offset + 3];
+					final Type t = (Type) _symbol_t.value;
+					final Symbol _symbol_i = _symbols[offset + 4];
+					final Identifier i = (Identifier) _symbol_i.value;
+					 fl.addElement(new Formal(t, i)); return fl;
+				}
+			},
+			new Action() {	// [13] FormalList = Type.t ID.i
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_t = _symbols[offset + 1];
+					final Type t = (Type) _symbol_t.value;
+					final Symbol _symbol_i = _symbols[offset + 2];
+					final Identifier i = (Identifier) _symbol_i.value;
+					 var fl = new FormalList(); fl.addElement(new Formal(t, i)); return fl;
+				}
+			},
+			new Action() {	// [14] Type = INT LBRACK RBRACK
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					 return new IntArrayType();
+				}
+			},
+			new Action() {	// [15] Type = BOOLEAN
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					 return new BooleanType();
+				}
+			},
+			new Action() {	// [16] Type = INT
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					 return new IntegerType();
+				}
+			},
+			new Action() {	// [17] Type = ID.i
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_i = _symbols[offset + 1];
+					final Identifier i = (Identifier) _symbol_i.value;
+					 return new IdentifierType(i.toString());
+				}
+			},
+			new Action() {	// [18] Statement = LBRACE StatementList.sl RBRACE
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_sl = _symbols[offset + 2];
+					final StatementList sl = (StatementList) _symbol_sl.value;
+					 return new Block(sl);
+				}
+			},
+			new Action() {	// [19] Statement = IF LPAREN Exp.e RPAREN Statement.s1 ELSE Statement.s2
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_e = _symbols[offset + 3];
+					final Exp e = (Exp) _symbol_e.value;
+					final Symbol _symbol_s1 = _symbols[offset + 5];
+					final Statement s1 = (Statement) _symbol_s1.value;
+					final Symbol _symbol_s2 = _symbols[offset + 7];
+					final Statement s2 = (Statement) _symbol_s2.value;
+					 return new If(e, s1, s2);
+				}
+			},
+			new Action() {	// [20] Statement = WHILE LPAREN Exp.e RPAREN Statement.s
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_e = _symbols[offset + 3];
+					final Exp e = (Exp) _symbol_e.value;
+					final Symbol _symbol_s = _symbols[offset + 5];
+					final Statement s = (Statement) _symbol_s.value;
+					 return new While(e, s);
+				}
+			},
+			new Action() {	// [21] Statement = PRINT LPAREN Exp.e RPAREN SEMI
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_e = _symbols[offset + 3];
+					final Exp e = (Exp) _symbol_e.value;
+					 return new Print(e);
+				}
+			},
+			new Action() {	// [22] Statement = ID.i EQUALS Exp.e SEMI
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_i = _symbols[offset + 1];
+					final Identifier i = (Identifier) _symbol_i.value;
+					final Symbol _symbol_e = _symbols[offset + 3];
+					final Exp e = (Exp) _symbol_e.value;
+					 return new Assign(i, e);
+				}
+			},
+			new Action() {	// [23] Statement = ID.i LBRACK Exp.e1 RBRACK EQUALS Exp.e2 SEMI
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_i = _symbols[offset + 1];
+					final Identifier i = (Identifier) _symbol_i.value;
+					final Symbol _symbol_e1 = _symbols[offset + 3];
+					final Exp e1 = (Exp) _symbol_e1.value;
+					final Symbol _symbol_e2 = _symbols[offset + 6];
+					final Exp e2 = (Exp) _symbol_e2.value;
+					 return new ArrayAssign(i, e1, e2);
+				}
+			},
+			new Action() {	// [24] StatementList = StatementList.sl Statement.s
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_sl = _symbols[offset + 1];
+					final StatementList sl = (StatementList) _symbol_sl.value;
+					final Symbol _symbol_s = _symbols[offset + 2];
+					final Statement s = (Statement) _symbol_s.value;
+					 sl.addElement(s); return sl;
+				}
+			},
+			new Action() {	// [25] StatementList = 
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					 return new StatementList();
+				}
+			},
+			new Action() {	// [26] Exp = Exp.e1 TIMES Exp.e2
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_e1 = _symbols[offset + 1];
+					final Exp e1 = (Exp) _symbol_e1.value;
+					final Symbol _symbol_e2 = _symbols[offset + 3];
+					final Exp e2 = (Exp) _symbol_e2.value;
 					 return new Times(e1, e2);
 				}
 			},
-			new Action() {	// [38] Exp = Exp.e1 PLUS Exp.e2
+			new Action() {	// [27] Exp = Exp.e1 PLUS Exp.e2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					final Symbol e1 = _symbols[offset + 1];
-					final Symbol e2 = _symbols[offset + 3];
+					final Symbol _symbol_e1 = _symbols[offset + 1];
+					final Exp e1 = (Exp) _symbol_e1.value;
+					final Symbol _symbol_e2 = _symbols[offset + 3];
+					final Exp e2 = (Exp) _symbol_e2.value;
 					 return new Plus(e1, e2);
 				}
 			},
-			new Action() {	// [39] Exp = Exp.e1 MINUS Exp.e2
+			new Action() {	// [28] Exp = Exp.e1 MINUS Exp.e2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					final Symbol e1 = _symbols[offset + 1];
-					final Symbol e2 = _symbols[offset + 3];
+					final Symbol _symbol_e1 = _symbols[offset + 1];
+					final Exp e1 = (Exp) _symbol_e1.value;
+					final Symbol _symbol_e2 = _symbols[offset + 3];
+					final Exp e2 = (Exp) _symbol_e2.value;
 					 return new Minus(e1, e2);
 				}
 			},
-			new Action() {	// [40] Exp = Exp.e1 LESS Exp.e2
+			new Action() {	// [29] Exp = Exp.e1 LESS Exp.e2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					final Symbol e1 = _symbols[offset + 1];
-					final Symbol e2 = _symbols[offset + 3];
+					final Symbol _symbol_e1 = _symbols[offset + 1];
+					final Exp e1 = (Exp) _symbol_e1.value;
+					final Symbol _symbol_e2 = _symbols[offset + 3];
+					final Exp e2 = (Exp) _symbol_e2.value;
 					 return new LessThan(e1, e2);
 				}
 			},
-			new Action() {	// [41] Exp = Exp.e1 AND Exp.e2
+			new Action() {	// [30] Exp = Exp.e1 AND Exp.e2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					final Symbol e1 = _symbols[offset + 1];
-					final Symbol e2 = _symbols[offset + 3];
+					final Symbol _symbol_e1 = _symbols[offset + 1];
+					final Exp e1 = (Exp) _symbol_e1.value;
+					final Symbol _symbol_e2 = _symbols[offset + 3];
+					final Exp e2 = (Exp) _symbol_e2.value;
 					 return new And(e1, e2);
 				}
 			},
-			new Action() {	// [42] Exp = Exp.e1 LBRACK Exp.e2 RBRACK
+			new Action() {	// [31] Exp = Exp.e1 LBRACK Exp.e2 RBRACK
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					final Symbol e1 = _symbols[offset + 1];
-					final Symbol e2 = _symbols[offset + 3];
+					final Symbol _symbol_e1 = _symbols[offset + 1];
+					final Exp e1 = (Exp) _symbol_e1.value;
+					final Symbol _symbol_e2 = _symbols[offset + 3];
+					final Exp e2 = (Exp) _symbol_e2.value;
 					 return new ArrayLookup(e1, e2);
 				}
 			},
-			new Action() {	// [43] Exp = Exp.e DOT LENGTH
+			new Action() {	// [32] Exp = Exp.e DOT LENGTH
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					final Symbol e = _symbols[offset + 1];
+					final Symbol _symbol_e = _symbols[offset + 1];
+					final Exp e = (Exp) _symbol_e.value;
 					 return new ArrayLength(e);
 				}
 			},
-			new Action() {	// [44] Exp = Exp.e DOT ID.i LPAREN ExpList.el RPAREN
+			new Action() {	// [33] Exp = Exp.e DOT ID.i LPAREN ExpList.el RPAREN
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					final Symbol e = _symbols[offset + 1];
+					final Symbol _symbol_e = _symbols[offset + 1];
+					final Exp e = (Exp) _symbol_e.value;
 					final Symbol _symbol_i = _symbols[offset + 3];
-					final String i = (String) _symbol_i.value;
-					final Symbol el = _symbols[offset + 5];
+					final Identifier i = (Identifier) _symbol_i.value;
+					final Symbol _symbol_el = _symbols[offset + 5];
+					final ExpList el = (ExpList) _symbol_el.value;
 					 return new Call(e, i, el);
 				}
 			},
-			new Action() {	// [45] Exp = INT_LIT.i
+			new Action() {	// [34] Exp = INT_LIT.i
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_i = _symbols[offset + 1];
 					final Integer i = (Integer) _symbol_i.value;
 					 return new IntegerLiteral(i);
 				}
 			},
-			new Action() {	// [46] Exp = TRUE
+			new Action() {	// [35] Exp = TRUE
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					 return new True();
 				}
 			},
-			new Action() {	// [47] Exp = FALSE
+			new Action() {	// [36] Exp = FALSE
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					 return new False();
 				}
 			},
-			new Action() {	// [48] Exp = ID.s
+			new Action() {	// [37] Exp = ID.s
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_s = _symbols[offset + 1];
-					final String s = (String) _symbol_s.value;
-					 return new IdentifierExp(s);
+					final Identifier s = (Identifier) _symbol_s.value;
+					 return new IdentifierExp(s.toString());
 				}
 			},
-			new Action() {	// [49] Exp = THIS
+			new Action() {	// [38] Exp = THIS
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					 return new This();
 				}
 			},
-			new Action() {	// [50] Exp = NEW INT LBRACK Exp.e RBRACK
+			new Action() {	// [39] Exp = NEW INT LBRACK Exp.e RBRACK
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					final Symbol e = _symbols[offset + 4];
+					final Symbol _symbol_e = _symbols[offset + 4];
+					final Exp e = (Exp) _symbol_e.value;
 					 return new NewArray(e);
 				}
 			},
-			new Action() {	// [51] Exp = NEW ID.i LPAREN RPAREN
+			new Action() {	// [40] Exp = NEW ID.i LPAREN RPAREN
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_i = _symbols[offset + 2];
-					final String i = (String) _symbol_i.value;
+					final Identifier i = (Identifier) _symbol_i.value;
 					 return new NewObject(i);
 				}
 			},
-			new Action() {	// [52] Exp = NOT Exp.e
+			new Action() {	// [41] Exp = NOT Exp.e
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					final Symbol e = _symbols[offset + 2];
+					final Symbol _symbol_e = _symbols[offset + 2];
+					final Exp e = (Exp) _symbol_e.value;
 					 return new Not(e);
 				}
 			},
-			new Action() {	// [53] Exp = LPAREN Exp.e RPAREN
+			new Action() {	// [42] Exp = LPAREN Exp.e RPAREN
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					final Symbol e = _symbols[offset + 2];
+					final Symbol _symbol_e = _symbols[offset + 2];
+					final Exp e = (Exp) _symbol_e.value;
 					 return e;
 				}
 			},
-			new Action() {	// [54] lst$ExpRest = ExpRest
+			new Action() {	// [43] ExpList = ExpList.el COMMA Exp.e
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1]); return new Symbol(lst);
+					final Symbol _symbol_el = _symbols[offset + 1];
+					final ExpList el = (ExpList) _symbol_el.value;
+					final Symbol _symbol_e = _symbols[offset + 3];
+					final Exp e = (Exp) _symbol_e.value;
+					 el.addElement(e); return el;
 				}
 			},
-			new Action() {	// [55] lst$ExpRest = lst$ExpRest ExpRest
+			new Action() {	// [44] ExpList = Exp.e
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 2]); return _symbols[offset + 1];
+					final Symbol _symbol_e = _symbols[offset + 1];
+					final Exp e = (Exp) _symbol_e.value;
+					 var el = new ExpList(); el.addElement(e); return el;
 				}
-			},
-			Action.NONE,  	// [56] opt$lst$ExpRest = 
-			Action.RETURN,	// [57] opt$lst$ExpRest = lst$ExpRest
-			RETURN2,	// [58] ExpList = Exp opt$lst$ExpRest; returns 'opt$lst$ExpRest' although none is marked
-			Action.NONE,  	// [59] ExpList = 
-			RETURN2	// [60] ExpRest = COMMA Exp; returns 'Exp' although none is marked
+			}
 		};
 	}
 

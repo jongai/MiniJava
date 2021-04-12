@@ -1,8 +1,9 @@
 import java.util.Vector;
 
-public class MethodDeclList {
+public class MethodDeclList extends Node {
 	private Vector<MethodDecl> list;
 	public MethodDeclList() {
+		super();
 		list = new Vector<MethodDecl>();
 	}
 	public void addElement(MethodDecl n) {

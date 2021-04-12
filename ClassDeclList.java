@@ -1,8 +1,9 @@
 import java.util.Vector;
 
-public class ClassDeclList {
+public class ClassDeclList extends Node {
 	private Vector<ClassDecl> list;
 	public ClassDeclList() {
+		super();
 		list = new Vector<ClassDecl>();
 	}
 	public void addElement(ClassDecl n) {

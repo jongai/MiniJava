@@ -22,40 +22,61 @@
 %left ID;
 
 %typeof INT_LIT = "Integer";
-%typeof ID = "String";
+%typeof ID = "Identifier";
+%typeof Exp = "Exp";
+%typeof Program = "Program";
+%typeof MainClass = "MainClass";
+%typeof ClassDeclList = "ClassDeclList";
+%typeof ClassDecl = "ClassDecl";
+%typeof VarDecl = "VarDecl";
+%typeof VarDeclList = "VarDeclList";
+%typeof MethodDecl = "MethodDecl";
+%typeof MethodDeclList = "MethodDeclList";
+%typeof Type = "Type";
+%typeof Statement = "Statement";
+%typeof StatementList = "StatementList";
+%typeof ExpList = "ExpList";
+%typeof FormalList = "FormalList";
 
 %goal Program;
 
-Program = MainClass ClassDeclList;
+Program = MainClass.m ClassDeclList.cl {: return new Program(m, cl); :};
 
-ClassDeclList = ClassDeclList ClassDecl
-|;
+ClassDeclList = ClassDeclList.cl ClassDecl.c {: cl.addElement(c); return cl; :}
+| {: return new ClassDeclList(); :};
 
-MainClass = CLASS ID.i1 LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID.i2 RPAREN LBRACE Statement RBRACE RBRACE;
+MainClass = CLASS ID.i1 LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID.i2 RPAREN LBRACE Statement.s RBRACE RBRACE {: return new MainClass(i1, i2, s); :};
 
-ClassDecl = CLASS ID.i LBRACE VarDecl* MethodDecl* RBRACE
-| CLASS ID.i EXTENDS ID.i LBRACE VarDecl* MethodDecl* RBRACE;
+ClassDecl = CLASS ID.i LBRACE VarDeclList.vl MethodDeclList.ml RBRACE {: return new ClassDeclSimple(i, vl, ml); :}
+| CLASS ID.i EXTENDS ID.j LBRACE VarDeclList.vl MethodDeclList.ml RBRACE {: return new ClassDeclExtends(i, j, vl, ml); :};
 
-VarDecl = Type ID.i;
+VarDecl = Type.t ID.i {: return new VarDecl(t, i); :};
 
-MethodDecl = PUBLIC Type ID.i LPAREN FormalList RPAREN LBRACE VarDecl* Statement* RETURN Exp SEMI RBRACE;
+VarDeclList = VarDeclList.vl VarDecl.v {: vl.addElement(v); return vl; :}
+| {: return new VarDeclList(); :};
 
-FormalList = Type ID FormalRest*
-|;
+MethodDecl = PUBLIC Type.t ID.i LPAREN FormalList.fl RPAREN LBRACE VarDeclList.vl StatementList.sl RETURN Exp.e SEMI RBRACE {: return new MethodDecl(t, i, fl, vl, sl, e); :};
 
-FormalRest = COMMA Type ID;
+MethodDeclList = MethodDeclList.ml MethodDecl.m {: ml.addElement(m); return ml; :}
+| {: return new MethodDeclList(); :};
 
-Type = INT LBRACK RBRACK
-| BOOLEAN
-| INT
-| ID.i;
+FormalList = FormalList.fl COMMA Type.t ID.i {: fl.addElement(new Formal(t, i)); return fl; :}
+| Type.t ID.i {: var fl = new FormalList(); fl.addElement(new Formal(t, i)); return fl; :};
 
-Statement = LBRACE Statement* RBRACE
-| IF LPAREN Exp RPAREN Statement ELSE Statement
-| WHILE LPAREN Exp RPAREN Statement
-| PRINT LPAREN Exp RPAREN SEMI
-| ID EQUALS Exp SEMI
-| ID LBRACK Exp RBRACK EQUALS Exp SEMI;
+Type = INT LBRACK RBRACK {: return new IntArrayType(); :}
+| BOOLEAN {: return new BooleanType(); :}
+| INT {: return new IntegerType(); :}
+| ID.i {: return new IdentifierType(i.toString()); :};
+
+Statement = LBRACE StatementList.sl RBRACE {: return new Block(sl); :}
+| IF LPAREN Exp.e RPAREN Statement.s1 ELSE Statement.s2 {: return new If(e, s1, s2); :}
+| WHILE LPAREN Exp.e RPAREN Statement.s {: return new While(e, s); :}
+| PRINT LPAREN Exp.e RPAREN SEMI {: return new Print(e); :}
+| ID.i EQUALS Exp.e SEMI {: return new Assign(i, e); :}
+| ID.i LBRACK Exp.e1 RBRACK EQUALS Exp.e2 SEMI {: return new ArrayAssign(i, e1, e2); :};
+
+StatementList = StatementList.sl Statement.s {: sl.addElement(s); return sl; :}
+| {: return new StatementList(); :};
 
 Exp = Exp.e1 TIMES Exp.e2 {: return new Times(e1, e2); :}
 | Exp.e1 PLUS Exp.e2 {: return new Plus(e1, e2); :}
@@ -68,7 +89,7 @@ Exp = Exp.e1 TIMES Exp.e2 {: return new Times(e1, e2); :}
 | INT_LIT.i {: return new IntegerLiteral(i); :}
 | TRUE {: return new True(); :}
 | FALSE {: return new False(); :}
-| ID.s {: return new IdentifierExp(s); :}
+| ID.s {: return new IdentifierExp(s.toString()); :}
 | THIS {: return new This(); :}
 | NEW INT LBRACK Exp.e RBRACK {: return new NewArray(e); :}
 | NEW ID.i LPAREN RPAREN {: return new NewObject(i); :}
@@ -76,7 +97,5 @@ Exp = Exp.e1 TIMES Exp.e2 {: return new Times(e1, e2); :}
 | LPAREN Exp.e RPAREN {: return e; :}
 ;
 
-ExpList = Exp ExpRest*
-|;
-
-ExpRest = COMMA Exp;
+ExpList = ExpList.el COMMA Exp.e {: el.addElement(e); return el; :}
+| Exp.e {: var el = new ExpList(); el.addElement(e); return el; :};
