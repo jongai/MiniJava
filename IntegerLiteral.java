@@ -1,5 +1,5 @@
 public class IntegerLiteral extends Exp {
-	private int i;
+	public final int i;
 
 	public IntegerLiteral(int i) {
 		super();

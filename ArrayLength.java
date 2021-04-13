@@ -1,5 +1,5 @@
 public class ArrayLength extends Exp {
-	private Exp e;
+	public final Exp e;
 
 	public ArrayLength(Exp e) {
 		super();

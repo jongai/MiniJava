@@ -1,7 +1,7 @@
 public class If extends Statement {
-	private Exp e;
-	private Statement s1;
-	private Statement s2;
+	public final Exp e;
+	public final Statement s1;
+	public final Statement s2;
 
 	public If(Exp e, Statement s1, Statement s2) {
 		super();

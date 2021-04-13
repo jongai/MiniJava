@@ -1,10 +1,10 @@
 public class MethodDecl extends Node {
-	private Type t;
-	private Identifier i;
-	private FormalList fl;
-	private VarDeclList vl;
-	private StatementList sl;
-	private Exp e;
+	public final Type t;
+	public final Identifier i;
+	public final FormalList fl;
+	public final VarDeclList vl;
+	public final StatementList sl;
+	public final Exp e;
 
 	public MethodDecl(Type t, Identifier i, FormalList fl, VarDeclList vl, StatementList sl, Exp e) {
 		super();

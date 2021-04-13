@@ -1,5 +1,5 @@
 public class Identifier extends Node {
-	private String s;
+	public final String s;
 
 	public Identifier(String s) {
 		super();

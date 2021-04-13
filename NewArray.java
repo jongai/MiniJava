@@ -1,5 +1,5 @@
 public class NewArray extends Exp {
-	private Exp e;
+    public final Exp e;
 
 	public NewArray(Exp e) {
 		super();

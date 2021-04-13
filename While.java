@@ -1,6 +1,6 @@
 public class While extends Statement {
-	private Exp e;
-	private Statement s;
+	public final Exp e;
+	public final Statement s;
 
 	public While(Exp e, Statement s) {
 		super();

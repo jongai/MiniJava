@@ -1,7 +1,7 @@
 public class ArrayAssign extends Statement {
-	private Identifier i;
-	private Exp e1;
-	private Exp e2;
+	public final Identifier i;
+	public final Exp e1;
+	public final Exp e2;
 
 	public ArrayAssign(Identifier i, Exp e1, Exp e2) {
 		super();

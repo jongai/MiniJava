@@ -1,6 +1,6 @@
 public class Assign extends Statement {
-	private Identifier i;
-	private Exp e;
+	public final Identifier i;
+	public final Exp e;
 
 	public Assign(Identifier i, Exp e) {
 		super();

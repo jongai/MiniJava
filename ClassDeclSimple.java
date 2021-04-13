@@ -1,7 +1,7 @@
 public class ClassDeclSimple extends ClassDecl {
-	private Identifier i;
-	private VarDeclList vl;
-	private MethodDeclList ml;
+	public final Identifier i;
+	public final VarDeclList vl;
+	public final MethodDeclList ml;
 
 	public ClassDeclSimple(Identifier i, VarDeclList vl, MethodDeclList ml) {
 		super();

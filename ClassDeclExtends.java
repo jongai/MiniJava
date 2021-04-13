@@ -1,8 +1,8 @@
 public class ClassDeclExtends extends ClassDecl {
-	private Identifier i;
-	private Identifier j;
-	private VarDeclList vl;
-	private MethodDeclList ml;
+	public final Identifier i;
+	public final Identifier j;
+	public final VarDeclList vl;
+	public final MethodDeclList ml;
 
 	public ClassDeclExtends(Identifier i, Identifier j, VarDeclList vl, MethodDeclList ml) {
 		super();

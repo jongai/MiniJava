@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="Hello World Project" default="run" basedir="./">
+<project name="Beaver" default="run" basedir="./">
 	<target name="beavertask" unless="beaver.available" description="creates Beaver Ant task">
 		<taskdef name="beaver" classname="beaver.comp.run.AntTask" classpath="./beaver.jar"/>
 		<property name="beaver.available" value="yes"/>

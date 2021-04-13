@@ -1,5 +1,5 @@
 public class Block extends Statement {
-	private StatementList sl;
+	public final StatementList sl;
 
 	public Block(StatementList sl) {
 		super();

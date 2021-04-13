@@ -1,5 +1,5 @@
 public class IdentifierExp extends Exp {
-	private String s;
+	public final String s;
 
 	public IdentifierExp(String s) {
 		super();

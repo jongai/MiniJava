@@ -1,6 +1,6 @@
 public class Formal extends Node {
-	private Type t;
-	private Identifier i;
+	public final Type t;
+	public final Identifier i;
 
 	public Formal(Type t, Identifier i) {
 		super();

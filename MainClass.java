@@ -1,7 +1,7 @@
 public class MainClass extends Node {
-	private Identifier i1;
-	private Identifier i2;
-	private Statement s;
+	public final Identifier i1;
+	public final Identifier i2;
+	public final Statement s;
 
 	public MainClass(Identifier i1, Identifier i2, Statement s) {
 		super();

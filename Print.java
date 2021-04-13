@@ -1,5 +1,5 @@
 public class Print extends Statement {
-	private Exp e;
+    public final Exp e;
 
 	public Print(Exp e) {
 		super();

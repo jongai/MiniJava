@@ -1,7 +1,7 @@
 public class Call extends Exp {
-	private Exp e;
-	private Identifier i;
-	private ExpList el;
+	public final Exp e;
+	public final Identifier i;
+	public final ExpList el;
 
 	public Call(Exp e, Identifier i, ExpList el) {
 		super();

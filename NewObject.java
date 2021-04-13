@@ -1,5 +1,5 @@
 public class NewObject extends Exp {
-	private Identifier i;
+    public final Identifier i;
 
 	public NewObject(Identifier i) {
 		super();

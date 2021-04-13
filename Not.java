@@ -1,5 +1,5 @@
 public class Not extends Exp {
-	private Exp e;
+    public final Exp e;
 
 	public Not(Exp e) {
 		super();
