@@ -1,18 +1,25 @@
 import java.util.Vector;
 
 public class VarDeclList extends Node {
-	private Vector<VarDecl> list;
-	public VarDeclList() {
-		super();
-		list = new Vector<VarDecl>();
-	}
-	public void addElement(VarDecl n) {
-		list.addElement(n);
-	}
-	public VarDecl elementAt(int i) {
-		return list.elementAt(i);
-	}
-	public int size() {
-		return list.size();
-	}
+    private Vector<VarDecl> list;
+
+    public VarDeclList() {
+        super();
+        list = new Vector<VarDecl>();
+    }
+
+    public void addElement(VarDecl n) {
+        list.addElement(n);
+    }
+
+    public VarDecl elementAt(int i) {
+        return list.elementAt(i);
+    }
+
+    public int size() {
+        return list.size();
+    }
+
+    public void accept(Visitor v) {
+    }
 }

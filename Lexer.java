@@ -791,182 +791,182 @@ class Lexer extends Scanner {
             // fall through
           case 40: break;
           case 3:
-            { System.out.print(" ! "); return newToken(Terminals.NOT);
+            { return newToken(Terminals.NOT);
             }
             // fall through
           case 41: break;
           case 4:
-            { System.out.print(" ( "); return newToken(Terminals.LPAREN);
+            { return newToken(Terminals.LPAREN);
             }
             // fall through
           case 42: break;
           case 5:
-            { System.out.print(" ) "); return newToken(Terminals.RPAREN);
+            { return newToken(Terminals.RPAREN);
             }
             // fall through
           case 43: break;
           case 6:
-            { System.out.print(" * "); return newToken(Terminals.TIMES);
+            { return newToken(Terminals.TIMES);
             }
             // fall through
           case 44: break;
           case 7:
-            { System.out.print(" + "); return newToken(Terminals.PLUS);
+            { return newToken(Terminals.PLUS);
             }
             // fall through
           case 45: break;
           case 8:
-            { System.out.print(" , "); return newToken(Terminals.COMMA);
+            { return newToken(Terminals.COMMA);
             }
             // fall through
           case 46: break;
           case 9:
-            { System.out.print(" - "); return newToken(Terminals.MINUS);
+            { return newToken(Terminals.MINUS);
             }
             // fall through
           case 47: break;
           case 10:
-            { System.out.print(" . "); return newToken(Terminals.DOT);
+            { return newToken(Terminals.DOT);
             }
             // fall through
           case 48: break;
           case 11:
-            { System.out.print(" INT_LIT(" + yytext() + ") "); return newToken(Terminals.INT_LIT, Integer.valueOf(yytext()));
+            { return newToken(Terminals.INT_LIT, Integer.valueOf(yytext()));
             }
             // fall through
           case 49: break;
           case 12:
-            { System.out.print(" ; "); return newToken(Terminals.SEMI);
+            { return newToken(Terminals.SEMI);
             }
             // fall through
           case 50: break;
           case 13:
-            { System.out.print(" < "); return newToken(Terminals.LESS);
+            { return newToken(Terminals.LESS);
             }
             // fall through
           case 51: break;
           case 14:
-            { System.out.print(" = "); return newToken(Terminals.EQUALS);
+            { return newToken(Terminals.EQUALS);
             }
             // fall through
           case 52: break;
           case 15:
-            { System.out.print(" ID(" + yytext() + ") "); return newToken(Terminals.ID, new Identifier(yytext()));
+            { return newToken(Terminals.ID, new Identifier(yytext()));
             }
             // fall through
           case 53: break;
           case 16:
-            { System.out.print(" [ "); return newToken(Terminals.LBRACK);
+            { return newToken(Terminals.LBRACK);
             }
             // fall through
           case 54: break;
           case 17:
-            { System.out.print(" ] "); return newToken(Terminals.RBRACK);
+            { return newToken(Terminals.RBRACK);
             }
             // fall through
           case 55: break;
           case 18:
-            { System.out.print(" { "); return newToken(Terminals.LBRACE);
+            { return newToken(Terminals.LBRACE);
             }
             // fall through
           case 56: break;
           case 19:
-            { System.out.print(" } "); return newToken(Terminals.RBRACE);
+            { return newToken(Terminals.RBRACE);
             }
             // fall through
           case 57: break;
           case 20:
-            { System.out.print(" && "); return newToken(Terminals.AND);
+            { return newToken(Terminals.AND);
             }
             // fall through
           case 58: break;
           case 21:
-            { System.out.print(" if "); return newToken(Terminals.IF);
+            { return newToken(Terminals.IF);
             }
             // fall through
           case 59: break;
           case 22:
-            { System.out.print(" int "); return newToken(Terminals.INT);
+            { return newToken(Terminals.INT);
             }
             // fall through
           case 60: break;
           case 23:
-            { System.out.print(" new "); return newToken(Terminals.NEW);
+            { return newToken(Terminals.NEW);
             }
             // fall through
           case 61: break;
           case 24:
-            { System.out.print(" else "); return newToken(Terminals.ELSE);
+            { return newToken(Terminals.ELSE);
             }
             // fall through
           case 62: break;
           case 25:
-            { System.out.print(" main "); return newToken(Terminals.MAIN);
+            { return newToken(Terminals.MAIN);
             }
             // fall through
           case 63: break;
           case 26:
-            { System.out.print(" this "); return newToken(Terminals.THIS);
+            { return newToken(Terminals.THIS);
             }
             // fall through
           case 64: break;
           case 27:
-            { System.out.print(" true "); return newToken(Terminals.TRUE);
+            { return newToken(Terminals.TRUE);
             }
             // fall through
           case 65: break;
           case 28:
-            { System.out.print(" void "); return newToken(Terminals.VOID);
+            { return newToken(Terminals.VOID);
             }
             // fall through
           case 66: break;
           case 29:
-            { System.out.print(" class "); return newToken(Terminals.CLASS);
+            { return newToken(Terminals.CLASS);
             }
             // fall through
           case 67: break;
           case 30:
-            { System.out.print(" while "); return newToken(Terminals.WHILE);
+            { return newToken(Terminals.WHILE);
             }
             // fall through
           case 68: break;
           case 31:
-            { System.out.print(" String "); return newToken(Terminals.STRING);
+            { return newToken(Terminals.STRING);
             }
             // fall through
           case 69: break;
           case 32:
-            { System.out.print(" length "); return newToken(Terminals.LENGTH);
+            { return newToken(Terminals.LENGTH);
             }
             // fall through
           case 70: break;
           case 33:
-            { System.out.print(" public "); return newToken(Terminals.PUBLIC);
+            { return newToken(Terminals.PUBLIC);
             }
             // fall through
           case 71: break;
           case 34:
-            { System.out.print(" return "); return newToken(Terminals.RETURN);
+            { return newToken(Terminals.RETURN);
             }
             // fall through
           case 72: break;
           case 35:
-            { System.out.print(" static "); return newToken(Terminals.STATIC);
+            { return newToken(Terminals.STATIC);
             }
             // fall through
           case 73: break;
           case 36:
-            { System.out.print(" boolean "); return newToken(Terminals.BOOLEAN);
+            { return newToken(Terminals.BOOLEAN);
             }
             // fall through
           case 74: break;
           case 37:
-            { System.out.print(" extends "); return newToken(Terminals.EXTENDS);
+            { return newToken(Terminals.EXTENDS);
             }
             // fall through
           case 75: break;
           case 38:
-            { System.out.print(" System.out.println "); return newToken(Terminals.PRINT);
+            { return newToken(Terminals.PRINT);
             }
             // fall through
           case 76: break;

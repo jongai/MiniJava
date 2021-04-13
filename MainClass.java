@@ -9,4 +9,8 @@ public class MainClass extends Node {
 		this.i2 = i2;
 		this.s = s;
 	}
+	
+	public void accept(Visitor v) {
+        v.visit(this);
+    }
 }

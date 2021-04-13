@@ -1,5 +1,5 @@
 import beaver.Symbol;
 
 public abstract class Node extends Symbol {
-	//public abstract void accept(Visitor visitor);
+	public abstract void accept(Visitor v);
 }

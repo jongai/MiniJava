@@ -5,4 +5,8 @@ public class NewObject extends Exp {
 		super();
 		this.i = i;
 	}
+	
+	public void accept(Visitor v) {
+        v.visit(this);
+    }
 }

@@ -9,4 +9,8 @@ public class If extends Statement {
 		this.s1 = s1;
 		this.s2 = s2;
 	}
+	
+	public void accept(Visitor v) {
+        v.visit(this);
+    }
 }

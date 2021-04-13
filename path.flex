@@ -33,43 +33,43 @@ ID             = [A-Za-z_][A-Za-z_0-9]*
 
 %%
 <YYINITIAL> {
-	";"                  { System.out.print(" ; "); return newToken(Terminals.SEMI); }
-    ","                  { System.out.print(" , "); return newToken(Terminals.COMMA); }
-    "."                  { System.out.print(" . "); return newToken(Terminals.DOT); }
-    "&&"                 { System.out.print(" && "); return newToken(Terminals.AND); }
-    "!"                  { System.out.print(" ! "); return newToken(Terminals.NOT); }
-    "+"                  { System.out.print(" + "); return newToken(Terminals.PLUS); }
-    "-"                  { System.out.print(" - "); return newToken(Terminals.MINUS); }
-    "*"                  { System.out.print(" * "); return newToken(Terminals.TIMES); }
-    "<"                  { System.out.print(" < "); return newToken(Terminals.LESS); }
-    "="                  { System.out.print(" = "); return newToken(Terminals.EQUALS); }
-    "("                  { System.out.print(" ( "); return newToken(Terminals.LPAREN); }
-    ")"                  { System.out.print(" ) "); return newToken(Terminals.RPAREN); }
-    "["                  { System.out.print(" [ "); return newToken(Terminals.LBRACK); }
-    "]"                  { System.out.print(" ] "); return newToken(Terminals.RBRACK); }
-    "{"                  { System.out.print(" { "); return newToken(Terminals.LBRACE); }
-    "}"                  { System.out.print(" } "); return newToken(Terminals.RBRACE); }
-    "class"              { System.out.print(" class "); return newToken(Terminals.CLASS); }
-    "public"             { System.out.print(" public "); return newToken(Terminals.PUBLIC); }
-    "static"             { System.out.print(" static "); return newToken(Terminals.STATIC); }
-    "void"               { System.out.print(" void "); return newToken(Terminals.VOID); }
-    "main"               { System.out.print(" main "); return newToken(Terminals.MAIN); }
-    "return"             { System.out.print(" return "); return newToken(Terminals.RETURN); }
-    "if"                 { System.out.print(" if "); return newToken(Terminals.IF); }
-    "else"               { System.out.print(" else "); return newToken(Terminals.ELSE); }
-    "while"              { System.out.print(" while "); return newToken(Terminals.WHILE); }
-    "int"                { System.out.print(" int "); return newToken(Terminals.INT); }
-    "boolean"            { System.out.print(" boolean "); return newToken(Terminals.BOOLEAN); }
-    "String"             { System.out.print(" String "); return newToken(Terminals.STRING); }
-    "true"               { System.out.print(" true "); return newToken(Terminals.TRUE); }
-    "this"               { System.out.print(" this "); return newToken(Terminals.THIS); }
-    "new"                { System.out.print(" new "); return newToken(Terminals.NEW); }
-    "extends"            { System.out.print(" extends "); return newToken(Terminals.EXTENDS); }
-    "System.out.println" { System.out.print(" System.out.println "); return newToken(Terminals.PRINT); }
-    "length"             { System.out.print(" length "); return newToken(Terminals.LENGTH); }
-	{Integer}            { System.out.print(" INT_LIT(" + yytext() + ") "); return newToken(Terminals.INT_LIT, Integer.valueOf(yytext())); }
-	{ID}                 { System.out.print(" ID(" + yytext() + ") "); return newToken(Terminals.ID, new Identifier(yytext())); }
-	{WhiteSpace}+        { /* ignore */ }
+    ";"                  { return newToken(Terminals.SEMI); }
+    ","                  { return newToken(Terminals.COMMA); }
+    "."                  { return newToken(Terminals.DOT); }
+    "&&"                 { return newToken(Terminals.AND); }
+    "!"                  { return newToken(Terminals.NOT); }
+    "+"                  { return newToken(Terminals.PLUS); }
+    "-"                  { return newToken(Terminals.MINUS); }
+    "*"                  { return newToken(Terminals.TIMES); }
+    "<"                  { return newToken(Terminals.LESS); }
+    "="                  { return newToken(Terminals.EQUALS); }
+    "("                  { return newToken(Terminals.LPAREN); }
+    ")"                  { return newToken(Terminals.RPAREN); }
+    "["                  { return newToken(Terminals.LBRACK); }
+    "]"                  { return newToken(Terminals.RBRACK); }
+    "{"                  { return newToken(Terminals.LBRACE); }
+    "}"                  { return newToken(Terminals.RBRACE); }
+    "class"              { return newToken(Terminals.CLASS); }
+    "public"             { return newToken(Terminals.PUBLIC); }
+    "static"             { return newToken(Terminals.STATIC); }
+    "void"               { return newToken(Terminals.VOID); }
+    "main"               { return newToken(Terminals.MAIN); }
+    "return"             { return newToken(Terminals.RETURN); }
+    "if"                 { return newToken(Terminals.IF); }
+    "else"               { return newToken(Terminals.ELSE); }
+    "while"              { return newToken(Terminals.WHILE); }
+    "int"                { return newToken(Terminals.INT); }
+    "boolean"            { return newToken(Terminals.BOOLEAN); }
+    "String"             { return newToken(Terminals.STRING); }
+    "true"               { return newToken(Terminals.TRUE); }
+    "this"               { return newToken(Terminals.THIS); }
+    "new"                { return newToken(Terminals.NEW); }
+    "extends"            { return newToken(Terminals.EXTENDS); }
+    "System.out.println" { return newToken(Terminals.PRINT); }
+    "length"             { return newToken(Terminals.LENGTH); }
+    {Integer}            { return newToken(Terminals.INT_LIT, Integer.valueOf(yytext())); }
+    {ID}                 { return newToken(Terminals.ID, new Identifier(yytext())); }
+    {WhiteSpace}+        { /* ignore */ }
 }
 
-[^]                    { throw new Scanner.Exception("unexpected character '" + yytext() + "'"); }
+[^]                      { throw new Scanner.Exception("unexpected character '" + yytext() + "'"); }

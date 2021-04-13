@@ -7,4 +7,8 @@ public class Assign extends Statement {
 		this.i = i;
 		this.e = e;
 	}
+	
+	public void accept(Visitor v) {
+        v.visit(this);
+    }
 }

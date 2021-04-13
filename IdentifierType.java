@@ -1,8 +1,12 @@
 public class IdentifierType extends Type {
-	private String s;
+	public final String s;
 
 	public IdentifierType(String s) {
 		super();
 		this.s = s;
 	}
+	
+	public void accept(Visitor v) {
+        v.visit(this);
+    }
 }

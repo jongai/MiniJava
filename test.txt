@@ -1,7 +1,3 @@
-class abc {
-	public static void main(String[] args) {
-		a = 1;
-	}
-}
+class abc {public static void main(String[] args) {a = 1;}}
 
 class abc {}

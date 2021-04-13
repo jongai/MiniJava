@@ -7,4 +7,8 @@ public class While extends Statement {
 		this.e = e;
 		this.s = s;
 	}
+	
+	public void accept(Visitor v) {
+        v.visit(this);
+    }
 }

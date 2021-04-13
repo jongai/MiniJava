@@ -9,4 +9,8 @@ public class Call extends Exp {
 		this.i = i;
 		this.el = el;
 	}
+	
+	public void accept(Visitor v) {
+        v.visit(this);
+    }
 }

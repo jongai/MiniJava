@@ -5,4 +5,8 @@ public class NewArray extends Exp {
 		super();
 		this.e = e;
 	}
+	
+	public void accept(Visitor v) {
+        v.visit(this);
+    }
 }

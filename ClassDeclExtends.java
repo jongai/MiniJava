@@ -11,4 +11,8 @@ public class ClassDeclExtends extends ClassDecl {
 		this.vl = vl;
 		this.ml = ml;
 	}
+	
+	public void accept(Visitor v) {
+        v.visit(this);
+    }
 }

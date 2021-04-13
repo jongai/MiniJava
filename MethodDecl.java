@@ -15,4 +15,8 @@ public class MethodDecl extends Node {
 		this.sl = sl;
 		this.e = e;
 	}
+	
+	public void accept(Visitor v) {
+        v.visit(this);
+    }
 }

@@ -7,4 +7,8 @@ public class VarDecl extends Node {
 		this.t = t;
 		this.i = i;
 	}
+	
+	public void accept(Visitor v) {
+        v.visit(this);
+    }
 }

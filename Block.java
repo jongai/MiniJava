@@ -5,4 +5,8 @@ public class Block extends Statement {
 		super();
 		this.sl = sl;
 	}
+	
+	public void accept(Visitor v) {
+        v.visit(this);
+    }
 }

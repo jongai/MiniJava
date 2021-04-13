@@ -7,4 +7,8 @@ public class Program extends Node {
 		this.m = m;
 		this.cl = cl;
 	}
+	
+	public void accept(Visitor v) {
+        v.visit(this);
+    }
 }

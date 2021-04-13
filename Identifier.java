@@ -9,4 +9,8 @@ public class Identifier extends Node {
 	public String toString() {
 		return s;
 	}
+	
+	public void accept(Visitor v) {
+        v.visit(this);
+    }
 }
