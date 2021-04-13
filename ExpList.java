@@ -17,6 +17,5 @@ public class ExpList extends Node {
 	}
 	
 	public void accept(Visitor v) {
-        v.visit(this);
     }
 }

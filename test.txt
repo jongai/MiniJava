@@ -1,4 +1,5 @@
-class abc {public static void main(String[] args) {a = 1;}}
+class abc {public static void main(String[] args) {
+		a = 1;
+	}
+}
 
-class abc {int a; boolean b; int[] c;
-    public int a(int d) {return 1;}}
