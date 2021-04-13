@@ -50,7 +50,7 @@ MainClass = CLASS ID.i1 LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRA
 ClassDecl = CLASS ID.i LBRACE VarDeclList.vl MethodDeclList.ml RBRACE {: return new ClassDeclSimple(i, vl, ml); :}
 | CLASS ID.i EXTENDS ID.j LBRACE VarDeclList.vl MethodDeclList.ml RBRACE {: return new ClassDeclExtends(i, j, vl, ml); :};
 
-VarDecl = Type.t ID.i {: return new VarDecl(t, i); :};
+VarDecl = Type.t ID.i SEMI {: return new VarDecl(t, i); :};
 
 VarDeclList = VarDeclList.vl VarDecl.v {: vl.addElement(v); return vl; :}
 | {: return new VarDeclList(); :};

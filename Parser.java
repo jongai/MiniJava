@@ -73,7 +73,7 @@ public class Parser extends beaver.Parser {
 					 return new ClassDeclExtends(i, j, vl, ml);
 				}
 			},
-			new Action() {	// [6] VarDecl = Type.t ID.i
+			new Action() {	// [6] VarDecl = Type.t ID.i SEMI
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_t = _symbols[offset + 1];
 					final Type t = (Type) _symbol_t.value;
