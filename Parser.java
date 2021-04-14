@@ -162,30 +162,36 @@ public class Parser extends beaver.Parser {
 					final Symbol _symbol_i = _symbols[offset + 2];
 					final Identifier i = (Identifier) _symbol_i.value;
 					
-        var fl = new FormalList();
+        FormalList fl = new FormalList();
         fl.addElement(new Formal(t, i));
         return fl;
 				}
 			},
-			new Action() {	// [14] Type = INT LBRACK RBRACK
+			new Action() {	// [14] FormalList = 
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					
+        return new FormalList();
+				}
+			},
+			new Action() {	// [15] Type = INT LBRACK RBRACK
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					
         return new IntArrayType();
 				}
 			},
-			new Action() {	// [15] Type = BOOLEAN
+			new Action() {	// [16] Type = BOOLEAN
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					
         return new BooleanType();
 				}
 			},
-			new Action() {	// [16] Type = INT
+			new Action() {	// [17] Type = INT
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					
         return new IntegerType();
 				}
 			},
-			new Action() {	// [17] Type = ID.i
+			new Action() {	// [18] Type = ID.i
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_i = _symbols[offset + 1];
 					final Identifier i = (Identifier) _symbol_i.value;
@@ -193,7 +199,7 @@ public class Parser extends beaver.Parser {
         return new IdentifierType(i.toString());
 				}
 			},
-			new Action() {	// [18] Statement = LBRACE StatementList.sl RBRACE
+			new Action() {	// [19] Statement = LBRACE StatementList.sl RBRACE
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_sl = _symbols[offset + 2];
 					final StatementList sl = (StatementList) _symbol_sl.value;
@@ -201,7 +207,7 @@ public class Parser extends beaver.Parser {
         return new Block(sl);
 				}
 			},
-			new Action() {	// [19] Statement = IF LPAREN Exp.e RPAREN Statement.s1 ELSE Statement.s2
+			new Action() {	// [20] Statement = IF LPAREN Exp.e RPAREN Statement.s1 ELSE Statement.s2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e = _symbols[offset + 3];
 					final Exp e = (Exp) _symbol_e.value;
@@ -213,7 +219,7 @@ public class Parser extends beaver.Parser {
         return new If(e, s1, s2);
 				}
 			},
-			new Action() {	// [20] Statement = WHILE LPAREN Exp.e RPAREN Statement.s
+			new Action() {	// [21] Statement = WHILE LPAREN Exp.e RPAREN Statement.s
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e = _symbols[offset + 3];
 					final Exp e = (Exp) _symbol_e.value;
@@ -223,7 +229,7 @@ public class Parser extends beaver.Parser {
         return new While(e, s);
 				}
 			},
-			new Action() {	// [21] Statement = PRINT LPAREN Exp.e RPAREN SEMI
+			new Action() {	// [22] Statement = PRINT LPAREN Exp.e RPAREN SEMI
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e = _symbols[offset + 3];
 					final Exp e = (Exp) _symbol_e.value;
@@ -231,7 +237,7 @@ public class Parser extends beaver.Parser {
         return new Print(e);
 				}
 			},
-			new Action() {	// [22] Statement = ID.i EQUALS Exp.e SEMI
+			new Action() {	// [23] Statement = ID.i EQUALS Exp.e SEMI
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_i = _symbols[offset + 1];
 					final Identifier i = (Identifier) _symbol_i.value;
@@ -241,7 +247,7 @@ public class Parser extends beaver.Parser {
         return new Assign(i, e);
 				}
 			},
-			new Action() {	// [23] Statement = ID.i LBRACK Exp.e1 RBRACK EQUALS Exp.e2 SEMI
+			new Action() {	// [24] Statement = ID.i LBRACK Exp.e1 RBRACK EQUALS Exp.e2 SEMI
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_i = _symbols[offset + 1];
 					final Identifier i = (Identifier) _symbol_i.value;
@@ -253,7 +259,7 @@ public class Parser extends beaver.Parser {
         return new ArrayAssign(i, e1, e2);
 				}
 			},
-			new Action() {	// [24] StatementList = StatementList.sl Statement.s
+			new Action() {	// [25] StatementList = StatementList.sl Statement.s
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_sl = _symbols[offset + 1];
 					final StatementList sl = (StatementList) _symbol_sl.value;
@@ -264,13 +270,13 @@ public class Parser extends beaver.Parser {
         return sl;
 				}
 			},
-			new Action() {	// [25] StatementList = 
+			new Action() {	// [26] StatementList = 
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					
         return new StatementList();
 				}
 			},
-			new Action() {	// [26] Exp = Exp.e1 TIMES Exp.e2
+			new Action() {	// [27] Exp = Exp.e1 TIMES Exp.e2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e1 = _symbols[offset + 1];
 					final Exp e1 = (Exp) _symbol_e1.value;
@@ -280,7 +286,7 @@ public class Parser extends beaver.Parser {
         return new Times(e1, e2);
 				}
 			},
-			new Action() {	// [27] Exp = Exp.e1 PLUS Exp.e2
+			new Action() {	// [28] Exp = Exp.e1 PLUS Exp.e2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e1 = _symbols[offset + 1];
 					final Exp e1 = (Exp) _symbol_e1.value;
@@ -290,7 +296,7 @@ public class Parser extends beaver.Parser {
         return new Plus(e1, e2);
 				}
 			},
-			new Action() {	// [28] Exp = Exp.e1 MINUS Exp.e2
+			new Action() {	// [29] Exp = Exp.e1 MINUS Exp.e2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e1 = _symbols[offset + 1];
 					final Exp e1 = (Exp) _symbol_e1.value;
@@ -300,7 +306,7 @@ public class Parser extends beaver.Parser {
         return new Minus(e1, e2);
 				}
 			},
-			new Action() {	// [29] Exp = Exp.e1 LESS Exp.e2
+			new Action() {	// [30] Exp = Exp.e1 LESS Exp.e2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e1 = _symbols[offset + 1];
 					final Exp e1 = (Exp) _symbol_e1.value;
@@ -310,7 +316,7 @@ public class Parser extends beaver.Parser {
         return new LessThan(e1, e2);
 				}
 			},
-			new Action() {	// [30] Exp = Exp.e1 AND Exp.e2
+			new Action() {	// [31] Exp = Exp.e1 AND Exp.e2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e1 = _symbols[offset + 1];
 					final Exp e1 = (Exp) _symbol_e1.value;
@@ -320,7 +326,7 @@ public class Parser extends beaver.Parser {
         return new And(e1, e2);
 				}
 			},
-			new Action() {	// [31] Exp = Exp.e1 LBRACK Exp.e2 RBRACK
+			new Action() {	// [32] Exp = Exp.e1 LBRACK Exp.e2 RBRACK
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e1 = _symbols[offset + 1];
 					final Exp e1 = (Exp) _symbol_e1.value;
@@ -330,7 +336,7 @@ public class Parser extends beaver.Parser {
         return new ArrayLookup(e1, e2);
 				}
 			},
-			new Action() {	// [32] Exp = Exp.e DOT LENGTH
+			new Action() {	// [33] Exp = Exp.e DOT LENGTH
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e = _symbols[offset + 1];
 					final Exp e = (Exp) _symbol_e.value;
@@ -338,7 +344,7 @@ public class Parser extends beaver.Parser {
         return new ArrayLength(e);
 				}
 			},
-			new Action() {	// [33] Exp = Exp.e DOT ID.i LPAREN ExpList.el RPAREN
+			new Action() {	// [34] Exp = Exp.e DOT ID.i LPAREN ExpList.el RPAREN
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e = _symbols[offset + 1];
 					final Exp e = (Exp) _symbol_e.value;
@@ -350,7 +356,7 @@ public class Parser extends beaver.Parser {
         return new Call(e, i, el);
 				}
 			},
-			new Action() {	// [34] Exp = INT_LIT.i
+			new Action() {	// [35] Exp = INT_LIT.i
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_i = _symbols[offset + 1];
 					final Integer i = (Integer) _symbol_i.value;
@@ -358,19 +364,19 @@ public class Parser extends beaver.Parser {
         return new IntegerLiteral(i);
 				}
 			},
-			new Action() {	// [35] Exp = TRUE
+			new Action() {	// [36] Exp = TRUE
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					
         return new True();
 				}
 			},
-			new Action() {	// [36] Exp = FALSE
+			new Action() {	// [37] Exp = FALSE
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					
         return new False();
 				}
 			},
-			new Action() {	// [37] Exp = ID.s
+			new Action() {	// [38] Exp = ID.s
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_s = _symbols[offset + 1];
 					final Identifier s = (Identifier) _symbol_s.value;
@@ -378,13 +384,13 @@ public class Parser extends beaver.Parser {
         return new IdentifierExp(s.toString());
 				}
 			},
-			new Action() {	// [38] Exp = THIS
+			new Action() {	// [39] Exp = THIS
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					
         return new This();
 				}
 			},
-			new Action() {	// [39] Exp = NEW INT LBRACK Exp.e RBRACK
+			new Action() {	// [40] Exp = NEW INT LBRACK Exp.e RBRACK
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e = _symbols[offset + 4];
 					final Exp e = (Exp) _symbol_e.value;
@@ -392,7 +398,7 @@ public class Parser extends beaver.Parser {
         return new NewArray(e);
 				}
 			},
-			new Action() {	// [40] Exp = NEW ID.i LPAREN RPAREN
+			new Action() {	// [41] Exp = NEW ID.i LPAREN RPAREN
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_i = _symbols[offset + 2];
 					final Identifier i = (Identifier) _symbol_i.value;
@@ -400,7 +406,7 @@ public class Parser extends beaver.Parser {
         return new NewObject(i);
 				}
 			},
-			new Action() {	// [41] Exp = NOT Exp.e
+			new Action() {	// [42] Exp = NOT Exp.e
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e = _symbols[offset + 2];
 					final Exp e = (Exp) _symbol_e.value;
@@ -408,7 +414,7 @@ public class Parser extends beaver.Parser {
         return new Not(e);
 				}
 			},
-			new Action() {	// [42] Exp = LPAREN Exp.e RPAREN
+			new Action() {	// [43] Exp = LPAREN Exp.e RPAREN
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e = _symbols[offset + 2];
 					final Exp e = (Exp) _symbol_e.value;
@@ -416,7 +422,7 @@ public class Parser extends beaver.Parser {
         return e;
 				}
 			},
-			new Action() {	// [43] ExpList = ExpList.el COMMA Exp.e
+			new Action() {	// [44] ExpList = ExpList.el COMMA Exp.e
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_el = _symbols[offset + 1];
 					final ExpList el = (ExpList) _symbol_el.value;
@@ -427,14 +433,20 @@ public class Parser extends beaver.Parser {
         return el;
 				}
 			},
-			new Action() {	// [44] ExpList = Exp.e
+			new Action() {	// [45] ExpList = Exp.e
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e = _symbols[offset + 1];
 					final Exp e = (Exp) _symbol_e.value;
 					
-        var el = new ExpList();
+        ExpList el = new ExpList();
         el.addElement(e);
         return el;
+				}
+			},
+			new Action() {	// [46] ExpList = 
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					
+        return new ExpList();
 				}
 			}
 		};

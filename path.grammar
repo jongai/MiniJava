@@ -112,11 +112,15 @@ FormalList = FormalList.fl COMMA Type.t ID.i
         fl.addElement(new Formal(t, i));
         return fl;
     :}
-| Type.t ID.i
+|   Type.t ID.i
     {:
-        var fl = new FormalList();
+        FormalList fl = new FormalList();
         fl.addElement(new Formal(t, i));
         return fl;
+    :}
+|
+    {:
+        return new FormalList();
     :}
 ;
 
@@ -252,8 +256,12 @@ ExpList = ExpList.el COMMA Exp.e
     :}
 | Exp.e
     {:
-        var el = new ExpList();
+        ExpList el = new ExpList();
         el.addElement(e);
         return el;
+    :}
+|
+    {:
+        return new ExpList();
     :}
 ;

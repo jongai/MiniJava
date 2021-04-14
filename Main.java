@@ -6,7 +6,7 @@ public class Main {
 		Scanner lexer = new Lexer(new FileReader(args[0]));
 		Parser parser = new Parser();
 		Program a = (Program) parser.parse(lexer);
-		PrettyPrintVisitor v = new PrettyPrintVisitor();
+		PrettyPrintVisitor2 v = new PrettyPrintVisitor2();
 		v.visit(a);
 	}
 }
