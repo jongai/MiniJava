@@ -10,7 +10,7 @@
 %terminals            RETURN, THIS;
 %terminals            STRING, INT, BOOLEAN;
 %terminals            EQUALS, LESS;
-%terminals            INT_LIT;        // our scanner provides numbers as integers
+%terminals            INT_LIT;
 %terminals            ID;
 
 %left DOT;
@@ -40,62 +40,220 @@
 
 %goal Program;
 
-Program = MainClass.m ClassDeclList.cl {: return new Program(m, cl); :};
-
-ClassDeclList = ClassDeclList.cl ClassDecl.c {: cl.addElement(c); return cl; :}
-| {: return new ClassDeclList(); :};
-
-MainClass = CLASS ID.i1 LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID.i2 RPAREN LBRACE Statement.s RBRACE RBRACE {: return new MainClass(i1, i2, s); :};
-
-ClassDecl = CLASS ID.i LBRACE VarDeclList.vl MethodDeclList.ml RBRACE {: return new ClassDeclSimple(i, vl, ml); :}
-| CLASS ID.i EXTENDS ID.j LBRACE VarDeclList.vl MethodDeclList.ml RBRACE {: return new ClassDeclExtends(i, j, vl, ml); :};
-
-VarDecl = Type.t ID.i SEMI {: return new VarDecl(t, i); :};
-
-VarDeclList = VarDeclList.vl VarDecl.v {: vl.addElement(v); return vl; :}
-| {: return new VarDeclList(); :};
-
-MethodDecl = PUBLIC Type.t ID.i LPAREN FormalList.fl RPAREN LBRACE VarDeclList.vl StatementList.sl RETURN Exp.e SEMI RBRACE {: return new MethodDecl(t, i, fl, vl, sl, e); :};
-
-MethodDeclList = MethodDeclList.ml MethodDecl.m {: ml.addElement(m); return ml; :}
-| {: return new MethodDeclList(); :};
-
-FormalList = FormalList.fl COMMA Type.t ID.i {: fl.addElement(new Formal(t, i)); return fl; :}
-| Type.t ID.i {: var fl = new FormalList(); fl.addElement(new Formal(t, i)); return fl; :};
-
-Type = INT LBRACK RBRACK {: return new IntArrayType(); :}
-| BOOLEAN {: return new BooleanType(); :}
-| INT {: return new IntegerType(); :}
-| ID.i {: return new IdentifierType(i.toString()); :};
-
-Statement = LBRACE StatementList.sl RBRACE {: return new Block(sl); :}
-| IF LPAREN Exp.e RPAREN Statement.s1 ELSE Statement.s2 {: return new If(e, s1, s2); :}
-| WHILE LPAREN Exp.e RPAREN Statement.s {: return new While(e, s); :}
-| PRINT LPAREN Exp.e RPAREN SEMI {: return new Print(e); :}
-| ID.i EQUALS Exp.e SEMI {: return new Assign(i, e); :}
-| ID.i LBRACK Exp.e1 RBRACK EQUALS Exp.e2 SEMI {: return new ArrayAssign(i, e1, e2); :};
-
-StatementList = StatementList.sl Statement.s {: sl.addElement(s); return sl; :}
-| {: return new StatementList(); :};
-
-Exp = Exp.e1 TIMES Exp.e2 {: return new Times(e1, e2); :}
-| Exp.e1 PLUS Exp.e2 {: return new Plus(e1, e2); :}
-| Exp.e1 MINUS Exp.e2 {: return new Minus(e1, e2); :}
-| Exp.e1 LESS Exp.e2 {: return new LessThan(e1, e2); :}
-| Exp.e1 AND Exp.e2 {: return new And(e1, e2); :}
-| Exp.e1 LBRACK Exp.e2 RBRACK {: return new ArrayLookup(e1, e2); :}
-| Exp.e DOT LENGTH {: return new ArrayLength(e); :}
-| Exp.e DOT ID.i LPAREN ExpList.el RPAREN {: return new Call(e, i, el); :}
-| INT_LIT.i {: return new IntegerLiteral(i); :}
-| TRUE {: return new True(); :}
-| FALSE {: return new False(); :}
-| ID.s {: return new IdentifierExp(s.toString()); :}
-| THIS {: return new This(); :}
-| NEW INT LBRACK Exp.e RBRACK {: return new NewArray(e); :}
-| NEW ID.i LPAREN RPAREN {: return new NewObject(i); :}
-| NOT Exp.e {: return new Not(e); :}
-| LPAREN Exp.e RPAREN {: return e; :}
+Program = MainClass.m ClassDeclList.cl 
+    {:
+        return new Program(m, cl);
+    :}
 ;
 
-ExpList = ExpList.el COMMA Exp.e {: el.addElement(e); return el; :}
-| Exp.e {: var el = new ExpList(); el.addElement(e); return el; :};
+ClassDeclList = ClassDeclList.cl ClassDecl.c
+    {:
+        cl.addElement(c);
+        return cl;
+    :}
+|
+    {:
+        return new ClassDeclList();
+    :}
+;
+
+MainClass = CLASS ID.i1 LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID.i2 RPAREN LBRACE Statement.s RBRACE RBRACE
+    {:
+        return new MainClass(i1, i2, s);
+    :}
+;
+
+ClassDecl = CLASS ID.i LBRACE VarDeclList.vl MethodDeclList.ml RBRACE
+    {:
+        return new ClassDeclSimple(i, vl, ml);
+    :}
+| CLASS ID.i EXTENDS ID.j LBRACE VarDeclList.vl MethodDeclList.ml RBRACE
+    {:
+        return new ClassDeclExtends(i, j, vl, ml);
+    :}
+;
+
+VarDecl = Type.t ID.i SEMI
+    {:
+        return new VarDecl(t, i);
+    :}
+;
+
+VarDeclList = VarDeclList.vl VarDecl.v
+    {:
+        vl.addElement(v);
+        return vl;
+    :}
+|
+    {:
+        return new VarDeclList();
+    :}
+;
+
+MethodDecl = PUBLIC Type.t ID.i LPAREN FormalList.fl RPAREN LBRACE VarDeclList.vl StatementList.sl RETURN Exp.e SEMI RBRACE
+    {:
+        return new MethodDecl(t, i, fl, vl, sl, e);
+    :}
+;
+
+MethodDeclList = MethodDeclList.ml MethodDecl.m
+    {:
+        ml.addElement(m);
+        return ml;
+    :}
+|
+    {:
+        return new MethodDeclList();
+    :}
+;
+
+FormalList = FormalList.fl COMMA Type.t ID.i
+    {:
+        fl.addElement(new Formal(t, i));
+        return fl;
+    :}
+| Type.t ID.i
+    {:
+        var fl = new FormalList();
+        fl.addElement(new Formal(t, i));
+        return fl;
+    :}
+;
+
+Type = INT LBRACK RBRACK
+    {:
+        return new IntArrayType();
+    :}
+| BOOLEAN
+    {:
+        return new BooleanType();
+    :}
+| INT
+    {:
+        return new IntegerType();
+    :}
+| ID.i
+    {:
+        return new IdentifierType(i.toString());
+    :}
+;
+
+Statement = LBRACE StatementList.sl RBRACE
+    {:
+        return new Block(sl);
+    :}
+| IF LPAREN Exp.e RPAREN Statement.s1 ELSE Statement.s2
+    {:
+        return new If(e, s1, s2);
+    :}
+| WHILE LPAREN Exp.e RPAREN Statement.s
+    {:
+        return new While(e, s);
+    :}
+| PRINT LPAREN Exp.e RPAREN SEMI
+    {:
+        return new Print(e);
+    :}
+| ID.i EQUALS Exp.e SEMI
+    {:
+        return new Assign(i, e);
+    :}
+| ID.i LBRACK Exp.e1 RBRACK EQUALS Exp.e2 SEMI
+    {:
+        return new ArrayAssign(i, e1, e2);
+    :}
+;
+
+StatementList = StatementList.sl Statement.s
+    {:
+        sl.addElement(s);
+        return sl;
+    :}
+|
+    {:
+        return new StatementList();
+    :}
+;
+
+Exp = Exp.e1 TIMES Exp.e2
+    {:
+        return new Times(e1, e2);
+    :}
+| Exp.e1 PLUS Exp.e2
+    {:
+        return new Plus(e1, e2);
+    :}
+| Exp.e1 MINUS Exp.e2
+    {:
+        return new Minus(e1, e2);
+    :}
+| Exp.e1 LESS Exp.e2
+    {:
+        return new LessThan(e1, e2);
+    :}
+| Exp.e1 AND Exp.e2
+    {:
+        return new And(e1, e2);
+    :}
+| Exp.e1 LBRACK Exp.e2 RBRACK
+    {:
+        return new ArrayLookup(e1, e2);
+    :}
+| Exp.e DOT LENGTH
+    {:
+        return new ArrayLength(e);
+    :}
+| Exp.e DOT ID.i LPAREN ExpList.el RPAREN
+    {:
+        return new Call(e, i, el);
+    :}
+| INT_LIT.i
+    {:
+        return new IntegerLiteral(i);
+    :}
+| TRUE
+    {:
+        return new True();
+    :}
+| FALSE
+    {:
+        return new False();
+    :}
+| ID.s
+    {:
+        return new IdentifierExp(s.toString());
+    :}
+| THIS
+    {:
+        return new This();
+    :}
+| NEW INT LBRACK Exp.e RBRACK
+    {:
+        return new NewArray(e);
+    :}
+| NEW ID.i LPAREN RPAREN
+    {:
+        return new NewObject(i);
+    :}
+| NOT Exp.e
+    {:
+        return new Not(e);
+    :}
+| LPAREN Exp.e RPAREN
+    {:
+        return e;
+    :}
+;
+
+ExpList = ExpList.el COMMA Exp.e
+    {:
+        el.addElement(e);
+        return el;
+    :}
+| Exp.e
+    {:
+        var el = new ExpList();
+        el.addElement(e);
+        return el;
+    :}
+;
